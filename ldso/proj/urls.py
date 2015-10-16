@@ -19,6 +19,15 @@ urlpatterns = patterns('',
                        	queryset=Blog.objects.all().order_by("-date"),
                         template_name="contact.html")),
 
+	 url(r'^oquefazemos/$', ListView.as_view(
+                        queryset=Blog.objects.all().order_by("-date"),
+                        template_name="oquefazemos.html")),
+
+	 url(r'^patrocinios/$', ListView.as_view(
+                        queryset=Blog.objects.all().order_by("-date"),
+                        template_name="patrocinios.html")),
+	 
+
 	url(r'^(?P<pk>\d+)$', DetailView.as_view(
 		model = Blog,
 		template_name="post.html")),
