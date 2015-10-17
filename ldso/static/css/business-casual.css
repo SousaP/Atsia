@@ -179,7 +179,9 @@ footer p {
         float: none;
         margin: 0 auto;
         table-layout: fixed;
-        font-size: 1.1em;
+        font-size: 1em;
+        
+
     }
 }
 

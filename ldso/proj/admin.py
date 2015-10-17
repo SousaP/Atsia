@@ -1,6 +1,8 @@
 from django.contrib import admin
 # adicionar post no blog
-from proj.models import Blog
+from proj.models import Blog, Circulos
 
-admin.site.register(Blog)
 # Register your models here.
+admin.site.register(Blog)
+admin.site.register(Circulos)
+
