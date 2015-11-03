@@ -15,9 +15,8 @@
                     </h2>
                     <hr>
                 </div>
-                 {% block content %}
+                    {% block content %}
 
-                    {% for blog in object_list %}
                 <div class="col-lg-12 text-center">
                     
                    
@@ -29,22 +28,17 @@
                         <br>
                         <small> on {{ blog.date }}</small>
                     </h2>
-                    <div class="col-lg-2">
-                    <img class="img-responsive" src="/{{blog.photo_img}} " >
-                    </div>
-                    <div class="col-lg-8">
-                    <p>{{ blog.body|safe|linebreaks|slice:":250"}}...</p>
-                    </div>
+                    <img class="img-responsive center-block" src="/{{blog.photo_img}} " >
+                 
+                    <p>{{ blog.body|safe|linebreaks}}</p>
 
                     <div class="col-lg-12 text-center">
-                    <a href="{% url "post_view" post_id=blog.id %}" class="btn btn-default btn-lg">Ver Post</a>
-                
+                    <a href='/blog/' class="btn btn-default btn-lg">Retroceder</a>
                     <hr>
                     </div>
                     
                 </div>
 
-                {% endfor %}
                     {% endblock %}
             </div>
         </div>

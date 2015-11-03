@@ -2,6 +2,8 @@ from django.conf.urls import patterns, include, url
 from django.views.generic import ListView, DetailView
 from proj.models import Blog, Circulos
 
+
+
 urlpatterns = patterns('', 
 	url(r'^$', ListView.as_view(
 		queryset=Blog.objects.all().order_by("-date")[:0],
@@ -10,6 +12,8 @@ urlpatterns = patterns('',
 	url(r'^blog/$', ListView.as_view(
                         queryset=Blog.objects.all().order_by("-date")[:10],
                         template_name="blog.html")),
+
+	url(r'^blog/(?P<post_id>[0-9]+)/$', 'proj.views.post_view', name= 'post_view'),
 
 	url(r'^about/$', ListView.as_view(
                         queryset=Blog.objects.all().order_by("-date"),
