@@ -19,3 +19,12 @@ class Circulos(models.Model):
 	def __unicode__(self):
 	    return self.title
 
+
+class Emails(models.Model):
+	Nome = models.CharField(max_length = 50)
+	Email = models.CharField(max_length = 25)
+	Telemovel = models.CharField(max_length = 12)
+	Mensagem = models.TextField()
+
+	def __unicode__(self):
+	    return self.Nome
