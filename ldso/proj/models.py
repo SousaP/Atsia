@@ -23,7 +23,7 @@ class Circulos(models.Model):
 
 class Emails(models.Model):
 	Nome = models.CharField(max_length = 50)
-	Email = models.CharField(max_length = 25)
+	Contacto = models.CharField(max_length = 25)
 	Telemovel = models.CharField(max_length = 12)
 	Mensagem = models.TextField()
 

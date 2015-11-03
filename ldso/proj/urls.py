@@ -23,6 +23,8 @@ urlpatterns = patterns('',
                        	queryset=Blog.objects.all().order_by("-date"),
                         template_name="contact.html")),
 
+	url(r'^post_email/$', 'proj.views.post_email', name= 'post_email'),
+
 	url(r'^oquefazemos/$', ListView.as_view(
                         queryset=Blog.objects.all().order_by("-date"),
                         template_name="oquefazemos.html")),
