@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 # Create your models here.
 class Blog(models.Model):
 	title = models.CharField(max_length = 200)
@@ -29,3 +29,37 @@ class Emails(models.Model):
 
 	def __str__(self):
 	    return self.Nome
+
+
+class CirculoForum(models.Model):
+	nome = models.CharField(max_length = 50)
+	numero_topicos = models.IntegerField()
+	descricao = models.CharField(max_length = 100)
+
+	def __str__(self):
+		return self.nome
+
+
+class Topico(models.Model):
+	forum = models.ForeignKey(CirculoForum)
+	data = models.DateTimeField(auto_now = True)
+	titulo = models.CharField(max_length = 50)
+	descricao = models.TextField()
+	autor = models.ForeignKey(User)
+
+	def __str__(self):
+		return self.id
+
+class Comentario(models.Model):
+	TopicoId = models.ForeignKey(Topico)
+	data = models.DateTimeField(auto_now=True)
+	comentario = models.CharField(max_length=200)
+	autor = models.ForeignKey(User)
+
+	def __str__(self):
+		return self.id
+
+
+
+
+
