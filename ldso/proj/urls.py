@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, include, url
 from django.views.generic import ListView, DetailView
-from proj.models import Blog, Circulos
+from proj.models import Blog, Circulos, CirculoForum
 
 
 
@@ -15,6 +15,14 @@ urlpatterns = patterns('',
 
 	url(r'^blog/(?P<post_id>[0-9]+)/$', 'proj.views.post_view', name= 'post_view'),
 
+
+	url(r'^forum/$', ListView.as_view(
+						queryset=CirculoForum.objects.all(),
+						template_name="forum.html")),
+
+	url(r'^forum/(?P<forum_id>[0-9]+)/$', 'proj.views.forum_view', name= 'forum_view'),
+
+	
 	url(r'^about/$', ListView.as_view(
                         queryset=Blog.objects.all().order_by("-date"),
                         template_name="about.html")),
@@ -36,6 +44,10 @@ urlpatterns = patterns('',
 	 url(r'^circulos/$', ListView.as_view(
                         queryset=Circulos.objects.all().order_by("-date"),
                         template_name="circulos.html")),
+
+	 url(r'^radio/$', ListView.as_view(
+                        model = Blog,
+                        template_name="radio.html")),
 
 	url(r'^(?P<pk>\d+)$', DetailView.as_view(
 		model = Blog,

@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from proj.models import Blog, Circulos, Emails
+from proj.models import Blog, Circulos, Emails, Topico, CirculoForum
 from proj.forms import EmailForm
 
 from django.views.decorators.csrf import csrf_protect
@@ -18,3 +18,9 @@ def post_email(request):
 	if form.is_valid():
 		form.save()
 		return render(request,'contact.html', {})
+
+#vista de uma pagina de Forum
+def forum_view(request, forum_id):
+	topicos = Topico.objects.filter(forum=forum_id)
+	circuloForum = CirculoForum.objects.get(id=forum_id)
+	return render(request, 'forum_individual.html', {'topicos':topicos, 'CirculoForum': circuloForum})

@@ -32,8 +32,9 @@ class Emails(models.Model):
 
 
 class CirculoForum(models.Model):
+	#id = models.IntegerField(primary_key=True)
 	nome = models.CharField(max_length = 50)
-	numero_topicos = models.IntegerField()
+	numero_topicos = models.IntegerField(default = '0', editable= True)
 	descricao = models.CharField(max_length = 100)
 
 	def __str__(self):
@@ -46,9 +47,10 @@ class Topico(models.Model):
 	titulo = models.CharField(max_length = 50)
 	descricao = models.TextField()
 	autor = models.ForeignKey(User)
+	numero_respostas = models.IntegerField()
 
 	def __str__(self):
-		return self.id
+		return self.titulo
 
 class Comentario(models.Model):
 	TopicoId = models.ForeignKey(Topico)
@@ -57,7 +59,8 @@ class Comentario(models.Model):
 	autor = models.ForeignKey(User)
 
 	def __str__(self):
-		return self.id
+		return self.comentario
+
 
 
 
