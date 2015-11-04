@@ -24,3 +24,8 @@ def forum_view(request, forum_id):
 	topicos = Topico.objects.filter(forum=forum_id)
 	circuloForum = CirculoForum.objects.get(id=forum_id)
 	return render(request, 'forum_individual.html', {'topicos':topicos, 'CirculoForum': circuloForum})
+
+
+#vista da pagina principal de Foruns
+def forum_principal_view(request):
+	return render(request, 'forum.html')
