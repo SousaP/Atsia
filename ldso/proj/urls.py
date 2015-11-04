@@ -15,6 +15,10 @@ urlpatterns = patterns('',
 
 	url(r'^blog/(?P<post_id>[0-9]+)/$', 'proj.views.post_view', name= 'post_view'),
 
+	url(r'^login/$', ListView.as_view(
+						model = Blog,
+						template_name="login.html")),
+
 
 	url(r'^forum/$', ListView.as_view(
 						queryset=CirculoForum.objects.all(),
