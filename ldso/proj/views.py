@@ -1,7 +1,8 @@
 from django.shortcuts import render, get_object_or_404
 from proj.models import Blog, Circulos, Emails, Topico, CirculoForum
 from proj.forms import EmailForm
-
+from django.contrib.auth import authenticate, login
+from django.http import HttpResponseRedirect
 from django.views.decorators.csrf import csrf_protect
 # Create your views here.
 
@@ -29,3 +30,19 @@ def forum_view(request, forum_id):
 #vista da pagina principal de Foruns
 def forum_principal_view(request):
 	return render(request, 'forum.html')
+
+
+#log-in	
+@csrf_protect
+def login_view(request):
+	username = request.POST.get('username')
+	password = request.POST.get('password')
+	user = authenticate(username=username, password=password)
+	if user is not None:
+		if user.is_active:
+			login(request, user)
+			return  HttpResponseRedirect('/forum/')
+		else: 
+			return render(request,'login.html', {"erro" : "erro login"})
+	else:
+		return render(request,'login.html', {"erro" : "erro login"})		

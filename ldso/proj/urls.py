@@ -37,6 +37,8 @@ urlpatterns = patterns('',
 
 	url(r'^post_email/$', 'proj.views.post_email', name= 'post_email'),
 
+	url(r'^post_login/$', 'proj.views.login_view', name= 'login_view'),
+
 	url(r'^oquefazemos/$', ListView.as_view(
                         queryset=Blog.objects.all().order_by("-date"),
                         template_name="oquefazemos.html")),
