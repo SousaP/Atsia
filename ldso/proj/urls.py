@@ -41,7 +41,7 @@ urlpatterns = patterns('',
                         queryset=Blog.objects.all().order_by("-date"),
                         template_name="oquefazemos.html")),
 
-	url(r'^patrocinios/$', ListView.as_view(
+	url(r'^parceiros/$', ListView.as_view(
                         queryset=Blog.objects.all().order_by("-date"),
                         template_name="patrocinios.html")),
 	 

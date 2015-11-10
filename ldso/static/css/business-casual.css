@@ -192,3 +192,51 @@ footer p {
         clear: both;
     }
 }
+
+
+/* flexbox photo album example */
+.album {
+  padding: 2rem 4rem;
+}
+    .album-heading {
+    color: #FFF;
+    font: normal 3rem "Cookie", arial;
+    text-shadow: 3px 3px 12px #000;
+  }
+.album-photos {
+    /*
+   set "display" property to "flex"
+   to make the magic happens
+  */
+  display: flex;
+  
+  /*
+   "flex-flow" property is a shorthand
+   for "flex-direction" and "flex-wrap"
+  */
+  flex-flow: row wrap;
+}
+  .album-photo {
+    /*
+        "flex" property is a shorthand for "flex-grow", "flex-shrink" and "flex-basis".
+    */
+        flex: 1 1 calc(100%/4);
+        padding: .5rem;
+     overflow: hidden;
+     /*order: 2;*/
+  }
+
+    /* You can easily change flex item order using "order" property */
+    /*.album-photo:nth-of-type(2) {
+     order: 1;
+     border: 1px solid;
+  }*/
+    
+    .album-photo img {
+     display: block;
+     width: 100%;
+     max-height: 400px;
+     border: 1px dotted rgba(255, 255, 255, .8);
+     background-color: rgba(255, 255, 255, .4);
+     padding: .5rem;
+}

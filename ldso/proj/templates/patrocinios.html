@@ -1,25 +1,46 @@
 <!DOCTYPE html>
     
     {% include 'top-nav.html' %}
+    <script  src="/static/js/jquery.js"></script>
+   <script  src="/static/js/lightbox.js"></script>
+    <link href="/static/css/lightbox.css" rel="stylesheet">
+ 
 
-    <div class="container" style="margin-bottom: 200px">
+    <article class="album">
+  
+  <div class="album-photos" >
+    
 
-        <div class="row">
-            <div class="box">
-                <div class="col-lg-12 text-center">
-                   
+    <a data-lightbox="image-1" class="album-photo" href="/static/img/EDP.png">
+      <img src="/static/img/EDP.png" >
+    </a>
 
-                    <div class="item">
-                                <p><img class="img-responsive img-full" src="/static/img/EDP.png" alt=""></p>
-                                <p><img class="img-responsive img-full" src="/static/img/santacasa.jpg" alt=""></p>
-                    </div>
+    <a data-lightbox="image-1" class="album-photo" href="/static/img/santacasa.jpg">
+      <img src="/static/img/santacasa.jpg" alt="">
+    </a>
 
+    <a data-lightbox="image-1" class="album-photo" href="/static/img/HSMCHLN.png">
+      <img src="/static/img/HSMCHLN.png" alt="">
+    </a>
 
-                </div>
-            </div>
-        </div>
+    <a data-lightbox="image-1" class="album-photo" href="/static/img/logo-feup.png">
+      <img src="/static/img/logo-feup.png" alt="">
+    </a>
+
+    <a data-lightbox="image-1" class="album-photo" href="/static/img/fabricadascores.png">
+      <img src="/static/img/fabricadascores.png" alt="">
+    </a>
+
+    <a data-lightbox="image-1" class="album-photo" href="/static/img/carnideJF.jpg">
+      <img src="/static/img/carnideJF.jpg" alt="">
+    </a>
+
+    <a data-lightbox="image-1" class="album-photo" href="/static/img/codingforimpact.png">
+      <img src="/static/img/codingforimpact.png" alt="">
+    </a>
 
     </div>
+    </article>                            
    
    {% include 'footer.html' %}
 
