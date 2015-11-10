@@ -6,7 +6,7 @@ class Blog(models.Model):
 	body = models.TextField()
 	date = models.DateTimeField()
 	photo_img = models.ImageField(upload_to = "static/img/blog/", default='static/img/logo_atsia.jpg')
-
+	video = models.FileField(upload_to = "static/video/blog/", default='static/default/video.mp4')
 	def __str__(self):
 	    return self.title
 
