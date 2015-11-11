@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from proj.models import Blog, Circulos, Emails, Topico, CirculoForum
+from proj.models import Blog, Circulos, Emails, Topico, CirculoForum, Participante
 from proj.forms import EmailForm
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponseRedirect
@@ -46,3 +46,14 @@ def login_view(request):
 			return render(request,'login.html', {"erro" : "erro login"})
 	else:
 		return render(request,'login.html', {"erro" : "erro login"})		
+
+
+#forum - circulos	
+def forum_page(request):
+	if request.user.is_authenticated():
+
+		participante = Participante.objects.get(id=request.user.id)
+		circulo = CirculoForum.objects.filter(nome=participante.circulo)
+		return render(request,'forum.html', {"object_list" : circulo})
+	else:
+		return  HttpResponseRedirect('/login/')

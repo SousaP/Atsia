@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+
+ {% block content %}
+
+
+            <p>Cirulo: {{ CirculoForum.nome}}.</p>
+
+             {% for CirculoForum in object_list %}
+
+
+
+        <div class="blog-item well">
+            <a href="#"><h2>{{ CirculoForum.nome }}</h2></a>   
+            <div class="blog-meta clearfix">
+                <p class="pull-right"><i class="icon-comment pull"></i> <a href="blog-item.html#comments">{{ CirculoForum.numero_topicos }} Tópicos</a></p>
+            </div>
+            <p>{{ CirculoForum.descricao|safe|linebreaks }}</p>
+
+
+            <a href="{% url "forum_view" forum_id=CirculoForum.id %}"  class="btn btn-link">Ver Mais <i class="icon-angle-right"></i></a>
+        </div>
+        {% endfor %}
+
+        {% endblock %}
+
+</body>
+</html>
