@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from proj.models import Blog, Circulos, Emails, Topico, CirculoForum, Participante
-from proj.forms import EmailForm
+from proj.forms import EmailForm, UserForm
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponseRedirect
 from django.views.decorators.csrf import csrf_protect
@@ -65,3 +65,17 @@ def forum_page(request):
 		return render(request,'forum.html', {"object_list" : circulo})
 	else:
 		return  HttpResponseRedirect('/login/')
+
+	
+def edit_names(request, template_name="editarprofile.html"):
+    if request.method == "POST":
+        form = UserForm(data=request.POST, instance=request.user)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.save()
+            return HttpResponseRedirect('/areapessoal/')
+    else:
+        form = UserForm(instance=request.user)
+    page_title = _('Edit user names')
+    return render_to_response(template_name, locals(),
+        context_instance=RequestContext(request))

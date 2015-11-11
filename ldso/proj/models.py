@@ -62,11 +62,10 @@ class Comentario(models.Model):
 		return self.comentario
 
 
-
-
 class Participante(models.Model):  
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     circulo = models.ForeignKey(CirculoForum)
+
 
 
 

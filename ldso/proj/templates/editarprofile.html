@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% include 'top-nav_forum.html' %}
+
+<div class="container">
+    <h1>Editar Perfil: {{request.user.username}} </h1>
+    <hr>
+  <div class="row">
+      <!-- left column -->
+      <!--div class="col-md-3">
+        <div class="text-center">
+          <img src="//placehold.it/100" class="avatar img-circle" alt="avatar">
+          <h6>Upload a different photo...</h6>
+          
+          <input type="file" class="form-control">
+        </div>
+      </div-->
+      
+      <!-- edit form column -->
+      <div class="col-md-9 personal-info">
+             
+        <form action="/post_User/" method="post"> 
+          {% csrf_token %}
+          {{form.as_p}}
+          <div class="form-group">
+            <label class="col-lg-3 control-label">Primeiro Nome:</label>
+            <div class="col-lg-8">
+              <input class="form-control" name="first_name" type="text" value="{{request.user.first_name}}">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-lg-3 control-label">Último Nome:</label>
+            <div class="col-lg-8">
+              <input class="form-control" name="last_name" type="text" value="{{request.user.last_name}}">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-lg-3 control-label">Email:</label>
+            <div class="col-lg-8">
+              <input class="form-control" name="email" type="text" value="{{request.user.email}}">
+            </div>
+          </div>
+          
+          <!--div class="form-group">
+            <label class="col-md-3 control-label">Password:</label>
+            <div class="col-md-8">
+              <input class="form-control" type="password" value="">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-md-3 control-label">Confirm password:</label>
+            <div class="col-md-8">
+              <input class="form-control" type="password" value="">
+            </div>
+          </div-->
+          <div class="form-group">
+            <label class="col-md-3 control-label"></label>
+            <div class="col-md-8">
+              <button type="submit" value="submit" class="btn btn-primary">Editar</button>
+              <span></span>
+              <a href="/areapessoal/" class="btn btn-primary">Cancelar</a>
+            </div>
+          </div>
+        </form>
+      </div>
+  </div>
+</div>
+<hr>
+
+
+{% include 'footer.html' %}
+</body>
+
+</html>

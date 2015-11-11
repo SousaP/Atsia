@@ -37,6 +37,8 @@ urlpatterns = patterns('',
 
 	url(r'^post_login/$', 'proj.views.login_view', name= 'login_view'),
 
+	url(r'^post_User/$', 'proj.views.edit_names', name= 'edit_names'),
+
 	url(r'^oquefazemos/$', ListView.as_view(
                         queryset=Blog.objects.all().order_by("-date"),
                         template_name="oquefazemos.html")),
@@ -52,6 +54,16 @@ urlpatterns = patterns('',
 	 url(r'^radio/$', ListView.as_view(
                         model = Blog,
                         template_name="radio.html")),
+
+
+	 url(r'^areapessoal/$', ListView.as_view(
+					model = Blog,
+					template_name="areapessoal.html")),
+
+	 url(r'^editarperfil/$', ListView.as_view(
+					model = Blog,
+					template_name="editarprofile.html")),
+
 
 	url(r'^(?P<pk>\d+)$', DetailView.as_view(
 		model = Blog,
