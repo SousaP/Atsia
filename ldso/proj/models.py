@@ -61,6 +61,15 @@ class Comentario(models.Model):
 	def __str__(self):
 		return self.comentario
 
+class Musica(models.Model):
+	nome = models.CharField(max_length=200)
+	data = models.DateTimeField(auto_now = True)
+	descricao = models.TextField()
+	ficheiro = models.FileField(upload_to='files', blank = True)
+
+	def __str__(self):
+		return self.nome
+
 
 
 
