@@ -35,7 +35,7 @@ body
 	background: #f5f5f5;
 	color: #34495e;
 	font-size: 12px;
-	padding-top: 80px;
+	padding-top: 0px;
 }
 body h1,body h2,body h3,body h4,body .created
 {
@@ -259,67 +259,14 @@ ul.tag-cloud li
 {
 	color: #fff;
 }
-header.navbar .navbar-inner
-{
-	background: #fff!important;
-	border: 0;
-	box-shadow: none;
-	moz-box-shadow: none;
-	webkit-box-shadow: none;
-}
+
 header #logo
 {
 	background: url(../images/logo.png) no-repeat 0 50%;
 	height: 80px;
 	width: 220px;
 }
-header.navbar
-{
-	margin-bottom: 0;
-}
-header.navbar .nav
-{
-	margin-top: 20px;
-}
-header.navbar .nav>li
-{
-	margin-left: 1px;
-}
-header.navbar .nav>li>a
-{
-	color: #333;
-	font-family: "Fjalla One";
-	font-size: 14px;
-	padding-bottom: 10px;
-	padding-top: 10px;
-	text-shadow: none;
-	text-transform: uppercase;
-}
-header.navbar .nav>li>a:hover
-{
-	background: transparent;
-	box-shadow: none;
-	color: #ffcc33;
-	moz-box-shadow: none;
-	webkit-box-shadow: none;
-}
-header.navbar .nav>li.active>a,header.navbar .nav>li.active>a:hover
-{
-	background: transparent;
-	box-shadow: none;
-	color: #ffcc33;
-	moz-box-shadow: none;
-	webkit-box-shadow: none;
-}
-header.navbar .nav>li.dropdown.open>a.dropdown-toggle
-{
-	background: transparent;
-	color: #ffcc33;
-}
-header.navbar .nav>li.login>a
-{
-	border-left: 1px solid #e5e5e5;
-}
+
 header .dropdown-menu
 {
 	margin-top: 20px;
@@ -328,21 +275,7 @@ header .dropdown-menu:before
 {
 	display: none!important;
 }
-.navbar .nav li.dropdown.open>.dropdown-toggle,.navbar .nav li.dropdown.active>.dropdown-toggle,.navbar .nav li.dropdown.open.active>.dropdown-toggle
-{
-	background-color: transparent;
-	color: #ffcc33;
-}
-.navbar .nav>.active>a,.navbar .nav>.active>a:hover,.navbar .nav>.active>a:focus
-{
-	box-shadow: none;
-	moz-box-shadow: none;
-	webkit-box-shadow: none;
-}
-.navbar .nav>li>a:focus,.navbar .nav>li>a:hover
-{
-	color: #ffcc33;
-}
+
 .dropdown-menu
 {
 	border: 0;
@@ -922,3 +855,87 @@ ul.faq li>div h3
 	margin-top: 150px;
 	text-align: center;
 }
+
+.navbar-brand {
+    text-transform: uppercase;
+    font-weight: 900;
+    letter-spacing: 2px;
+}
+
+.navbar-nav {
+    text-transform: uppercase;
+    font-weight: 400;
+    /*letter-spacing: 3px;*/
+}
+@media screen and (min-width:768px) {
+    .brand {
+        display: inherit;
+        margin: 0;
+        padding: 30px 0 10px;
+        text-align: center;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        font-family: "Josefin Slab","Helvetica Neue",Helvetica,Arial,sans-serif;
+        font-size: 5em;
+        font-weight: 700;
+        line-height: normal;
+        color: #fff;
+    }
+
+    .top-divider {
+        margin-top: 0;
+    }
+
+    .img-left {
+        float: left;
+        margin-right: 25px;
+    }
+
+    .address-bar {
+        display: inherit;
+        margin: 0;
+        padding: 0 0 40px;
+        text-align: center;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        text-transform: uppercase;
+        font-size: 1.25em;
+        font-weight: 400;
+        letter-spacing: 3px;
+        color: #fff;
+    }
+
+    .navbar {
+        border-radius: 0;
+    }
+
+    .navbar-header {
+        display: none;
+    }
+
+    .navbar {
+        min-height: 0;
+    }
+
+    .navbar-default {
+        border: none;
+        background: #ffcc33;
+    }
+
+    .nav>li>a {
+        padding: 35px;
+    }
+
+    .navbar-nav>li>a {
+        line-height: normal;
+    }
+
+    .navbar-nav {
+        display: table;
+        float: left;
+        margin: 0 auto;
+        table-layout: auto;
+        font-size: 1.05em;
+        
+
+    }
+}
+
