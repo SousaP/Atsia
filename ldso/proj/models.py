@@ -42,15 +42,15 @@ class CirculoForum(models.Model):
 
 
 class Topico(models.Model):
-	forum = models.ForeignKey(CirculoForum)
-	data = models.DateTimeField(auto_now = True)
-	titulo = models.CharField(max_length = 50)
-	descricao = models.TextField()
-	autor = models.ForeignKey(User)
-	numero_respostas = models.IntegerField()
+	Forum = models.ForeignKey(CirculoForum)
+	Data = models.DateTimeField(auto_now = True)
+	Titulo = models.CharField(max_length = 50)
+	Descricao = models.TextField()
+	Autor = models.ForeignKey(User)
+	Autorizado = models.BooleanField()
 
 	def __str__(self):
-		return self.titulo
+		return self.Titulo
 
 class Comentario(models.Model):
 	TopicoId = models.ForeignKey(Topico)
@@ -62,12 +62,9 @@ class Comentario(models.Model):
 		return self.comentario
 
 
-
-
 class Participante(models.Model):  
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     circulo = models.ForeignKey(CirculoForum)
-
 
 
 

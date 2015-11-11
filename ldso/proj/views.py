@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from proj.models import Blog, Circulos, Emails, Topico, CirculoForum, Participante
-from proj.forms import EmailForm
+from proj.forms import EmailForm, TopicoForm
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponseRedirect
 from django.views.decorators.csrf import csrf_protect
@@ -27,8 +27,49 @@ def forum_view(request, forum_id):
 		circulo = CirculoForum.objects.get(nome=participante.circulo)
 		circuloForum = CirculoForum.objects.get(id=forum_id)
 		if circuloForum.id == circulo.id:
-			topicos = Topico.objects.filter(forum=forum_id)
+			topicos = Topico.objects.filter(Forum=forum_id)
 			return render(request, 'forum_individual.html', {'topicos':topicos, 'CirculoForum': circuloForum})
+		else:
+			return  HttpResponseRedirect('/login/')
+
+	else:
+		return  HttpResponseRedirect('/login/')
+
+
+
+#recebe post criação post
+def post_topico(request, forum_id):
+	erro = "comecou"
+	if request.user.is_authenticated():
+		participante = Participante.objects.get(user=request.user.id)
+		circulo = CirculoForum.objects.get(nome=participante.circulo)
+		circuloForum = CirculoForum.objects.get(id=forum_id)
+		if circuloForum.id == circulo.id:
+			#se ta tudo ta tudo			
+			form = TopicoForm(request.POST)
+			if form.is_valid():
+				commit = form.save(commit=False)
+				commit.Autor = request.user
+				commit.Forum = circuloForum
+				commit.Autorizado = False
+				commit.save()
+				return HttpResponseRedirect('/forum/')
+			else:
+				return  render(request,'teste.html', {"erro":erro})
+		else:
+			return  render(request,'teste.html', {"erro":erro})
+	else:
+		return  render(request,'teste.html', {"erro":erro})
+
+#vista de uma pagina de criação de post
+def create_post(request, forum_id):
+	if request.user.is_authenticated():
+		participante = Participante.objects.get(user=request.user.id)
+		circulo = CirculoForum.objects.get(nome=participante.circulo)
+		circuloForum = CirculoForum.objects.get(id=forum_id)
+		if circuloForum.id == circulo.id:
+			topicos = Topico.objects.filter(Forum=forum_id)
+			return render(request, 'criarTopico.html', {'forum_id':forum_id})
 		else:
 			return  HttpResponseRedirect('/login/')
 

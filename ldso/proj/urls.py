@@ -24,6 +24,10 @@ urlpatterns = patterns('',
 
 	url(r'^forum/(?P<forum_id>[0-9]+)/$', 'proj.views.forum_view', name= 'forum_view'),
 
+
+	url(r'^forum/(?P<forum_id>[0-9]+)/CriarTopico/$', 'proj.views.create_post', name= 'create_post'),
+
+	url(r'^forum/(?P<forum_id>[0-9]+)/postTopico/$', 'proj.views.post_topico', name= 'post_topico'),
 	
 	url(r'^about/$', ListView.as_view(
                         queryset=Blog.objects.all().order_by("-date"),

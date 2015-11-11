@@ -1,0 +1,57 @@
+
+{% include 'top-nav_forum.html' %}
+
+<body>
+
+    <!-- Título -->  
+    <section class="title">
+        <div class="container">
+            <div class="row-fluid">
+                <div class="span6">
+                    <h1>{{ CirculoForum.nome }}</h1>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- / .Título -->        
+
+    <!-- Form -->
+    {% block content %}
+    <div class="container">
+      <h2>Criar Topico</h2>
+      <form role="form" method="post" action="/forum/{{forum_id}}/postTopico/">
+      {% csrf_token %}
+      {{form.as_p}}
+        <div class="form-group">
+          <label for="Titulo">Titulo:</label>
+          <input type="text" class="form-control" name="Titulo" placeholder="Titulo" maxlength="50">
+      </div>
+      <div class="form-group">
+          <label for="Descricao">Descrição:</label>
+          <textarea rows="6" class="form-control" name="Descricao"  placeholder="Descrição..."></textarea>
+      </div>
+      <input type="hidden" name="Autor" value="">
+      <button type="submit" class="btn btn-default">Submit</button>
+  </form>
+</div>
+
+{% endblock %}
+<!--/Tópicos -->
+
+
+<!--Footer-->
+<footer id="footer">
+    <div class="container">
+        <div class="row-fluid">
+
+            <div class="span1">
+                <a id="gototop" class="gototop pull-right" href="#"><i class="icon-angle-up"></i></a>
+            </div>
+            <!--/Goto Top-->
+        </div>
+    </div>
+</footer>
+<!--/Footer-->
+
+</body>
+</html>
