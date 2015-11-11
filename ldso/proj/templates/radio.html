@@ -2,40 +2,44 @@
 
 {% include 'top-nav.html' %}
 
-  <!-- Custom CSS -->
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="../static/js/radio/radio.js"></script>  
 <link href="/static/css/radio/radio.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Tangerine">
 
-<div class="top"><strong>Radio</strong></div>
 
-<div class="body"><div class="title">PLAYLIST</div>
-  
-<ul >
-  <li class="music">BREATHE CAROLINA | BLACKOUT</br>
-    <audio controls >
-    <source src="horse.ogg" type="audio/ogg">
-    <source src="horse.mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
-    </audio>
-  </li>
-  <li class="music">SWEDISH HOUSE MAFIA | DON'T YOU WORRY CHILD
-    <audio controls >
-    <source src="horse.ogg" type="audio/ogg">
-    <source src="horse.mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
-    </audio>
-  </li>
+<body>
 
-  <li class="music">Reproduzir todas
-    <audio controls >
-    <source src="horse.ogg" type="audio/ogg">
-    <source src="horse.mp3" type="audio/mpeg">
-    Your browser does not support the audio element.
-    </audio>
-  </li>
-</ul> 
+<div class="playa" style="margin-right: 3cm">
+
+<audio id="audio" tabindex="0" type="audio/mpeg" controls autoplay>
+        <source type="audio/mp3" src="" preload="auto">
+        Sorry, your browser does not support HTML5 audio.
+</audio>
+
+<div class="dropdown">
+
+  <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Escolha a sua Música!
+  <span class="caret"></span></button>
+
+  <ul id="playlist" class="dropdown-menu">
+    {% block content %}
+    {% for Musica in object_list %}
+    <li>
+    <a href="../static/media/{{Musica.ficheiro}}" nome="{{Musica.nome}}" desc="{{Musica.descricao}}">{{Musica.nome}}</a></li>
+    {% endfor %}
+    {% endblock %}
+
+  </ul>
 
 </div>
-    
+<br><br><br>
+<p class="current"></p>
+<br><br>
+<p class="describe"> </p>
+
+</div>
+</body>
 
 {% include 'footer.html' %}
 
