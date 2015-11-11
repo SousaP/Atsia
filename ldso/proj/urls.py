@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, include, url
 from django.views.generic import ListView, DetailView
-from proj.models import Blog, Circulos, CirculoForum
+from proj.models import Blog, Circulos, CirculoForum, Musica
 
 
 
@@ -54,7 +54,7 @@ urlpatterns = patterns('',
                         template_name="circulos.html")),
 
 	 url(r'^radio/$', ListView.as_view(
-                        model = Blog,
+                        queryset=Musica.objects.all(),
                         template_name="radio.html")),
 
 	url(r'^(?P<pk>\d+)$', DetailView.as_view(

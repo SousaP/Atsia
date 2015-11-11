@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
-from proj.models import Blog, Circulos, Emails, Topico, CirculoForum, Participante
+from proj.models import Blog, Circulos, Emails, Topico, CirculoForum, Participante, Musica
 from proj.forms import EmailForm, TopicoForm
+
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponseRedirect
 from django.views.decorators.csrf import csrf_protect

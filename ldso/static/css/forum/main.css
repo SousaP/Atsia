@@ -33,9 +33,10 @@
 body
 {
 	background: #f5f5f5;
-	color: #34495e;
+	color: #2D2926;
 	font-size: 12px;
 	padding-top: 0px;
+	padding-bottom: 0px;
 }
 body h1,body h2,body h3,body h4,body .created
 {
@@ -74,7 +75,7 @@ body h3,body h4
 }
 .btn.btn-link
 {
-	color: #ffcc33;
+	color: #2D2926;
 	padding: 0;
 }
 .btn.btn-link:hover
@@ -99,7 +100,7 @@ a
 }
 a:hover,a:focus
 {
-	color: #005580;
+	color: #2D2926;
 	outline: 0;
 	text-decoration: none;
 }
@@ -110,7 +111,7 @@ a:hover,a:focus
 }
 body>section
 {
-	padding: 50px 0;
+	padding: 25px 0;
 }
 body>section#slide-show
 {
@@ -154,7 +155,7 @@ body>section#slide-show
 }
 .title
 {
-	background: #ffcc33;
+	background: #2D2926;
 	color: #fff;
 	padding: 20px 0;
 }
@@ -384,15 +385,16 @@ header .dropdown-menu:before
 }
 #services
 {
-	background: #252525;
-	color: #999;
+	background: #2D2926;
+	color: #f5f5f5;
 }
 #services h1,#services h2,#services h3,#services h4,#services h5,#services h6
 {
-	color: #fff;
+	color: #ffcc33;
 }
 #main-contents
 {
+	margin-top: 20px;
 	margin-top: 20px;
 }
 #main-contents .blog-news .created
@@ -498,14 +500,18 @@ ul.rss li::before
 }
 #footer
 {
-	background: #333;
-	color: #666;
+	background: #2D2926;
+	color: #f5f5f5;
 	padding-bottom: 15px;
 	padding-top: 15px;
+	bottom:0px;
+    left:0px;
+    right:0px;
+    position: fixed;
 }
 #footer a
 {
-	color: #666;
+	color: #f5f5f5;
 }
 #footer a:hover
 {
@@ -545,7 +551,7 @@ ul.social>li
 }
 ul.social>li>a
 {
-	color: #666;
+	color: #f5f5f5;
 	font-size: 24px;
 }
 ul.social>li>a:hover
@@ -563,12 +569,20 @@ ul.social>li>a:hover
 }
 .accordion-heading .accordion-toggle
 {
-	color: #666;
+	color: #f5f5f5;
 	font-weight: 700;
 }
 .accordion-inner
 {
 	border-top: 0;
+}
+.well
+{
+    background: #ffcc33;
+}
+.blog-item h2
+{
+	color:#2D2926;
 }
 .blog .blog-item h2
 {
@@ -905,6 +919,7 @@ ul.faq li>div h3
 
     .navbar {
         border-radius: 0;
+        margin-bottom: 0;
     }
 
     .navbar-header {
@@ -928,6 +943,10 @@ ul.faq li>div h3
         line-height: normal;
     }
 
+    #bootstrap-overrides .navbar-nav>li>a:hover{
+    	color:#f5f5f5;
+    }
+    
     .navbar-nav {
         display: table;
         float: left;
@@ -939,3 +958,9 @@ ul.faq li>div h3
     }
 }
 
+#address li
+{
+	width: 120px;
+	height: 64px;
+	display: inline-block;
+}
