@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from proj.models import Blog, Circulos, Emails, Topico, CirculoForum, Musica
+from proj.models import Blog, Circulos, Emails, Topico, CirculoForum, Participante, Musica
 from proj.forms import EmailForm
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponseRedirect
@@ -22,9 +22,18 @@ def post_email(request):
 
 #vista de uma pagina de Forum
 def forum_view(request, forum_id):
-	topicos = Topico.objects.filter(forum=forum_id)
-	circuloForum = CirculoForum.objects.get(id=forum_id)
-	return render(request, 'forum_individual.html', {'topicos':topicos, 'CirculoForum': circuloForum})
+	if request.user.is_authenticated():
+		participante = Participante.objects.get(user=request.user.id)
+		circulo = CirculoForum.objects.get(nome=participante.circulo)
+		circuloForum = CirculoForum.objects.get(id=forum_id)
+		if circuloForum.id == circulo.id:
+			topicos = Topico.objects.filter(forum=forum_id)
+			return render(request, 'forum_individual.html', {'topicos':topicos, 'CirculoForum': circuloForum})
+		else:
+			return  HttpResponseRedirect('/login/')
+
+	else:
+		return  HttpResponseRedirect('/login/')
 
 
 #vista da pagina principal de Foruns
@@ -46,3 +55,13 @@ def login_view(request):
 			return render(request,'login.html', {"erro" : "erro login"})
 	else:
 		return render(request,'login.html', {"erro" : "erro login"})		
+
+
+#forum - circulos	
+def forum_page(request):
+	if request.user.is_authenticated():
+		participante = Participante.objects.get(user=request.user.id)
+		circulo = CirculoForum.objects.filter(nome=participante.circulo)
+		return render(request,'forum.html', {"object_list" : circulo})
+	else:
+		return  HttpResponseRedirect('/login/')
