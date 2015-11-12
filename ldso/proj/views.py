@@ -25,7 +25,7 @@ def post_email(request):
 #vista de uma pagina de Forum
 def forum_view(request, forum_id):
 	if request.user.is_authenticated():
-		participante = Participante.objects.get(user=request.user.id)
+		participante = Participante.objects.get(user=request.user)
 		circulo = CirculoForum.objects.get(nome=participante.circulo)
 		circuloForum = CirculoForum.objects.get(id=forum_id)
 		if circuloForum.id == circulo.id:
