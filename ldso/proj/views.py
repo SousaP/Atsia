@@ -3,7 +3,7 @@ from proj.models import Blog, Circulos, Emails, Topico, CirculoForum, Participan
 from proj.forms import EmailForm, TopicoForm, UserForm, NovoComentario
 
 
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect
 from django.views.decorators.csrf import csrf_protect
 # Create your views here.
@@ -147,3 +147,9 @@ def post_comentario(request, topico_id):
 		return render(request,'forum.html')
 	else:
 		return  render(request,'/forum/')
+
+
+#logout
+def logout_view(request):
+    logout(request)
+    return  HttpResponseRedirect('/')

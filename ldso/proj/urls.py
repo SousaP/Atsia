@@ -22,6 +22,8 @@ urlpatterns = patterns('',
 
 	url(r'^forum/$', 'proj.views.forum_page', name= 'forum_page'),
 
+	url(r'^forum/logout/$', 'proj.views.logout_view', name= 'logout_view'),
+
 	url(r'^forum/(?P<forum_id>[0-9]+)/$', 'proj.views.forum_view', name= 'forum_view'),
 
 
