@@ -33,9 +33,7 @@
                 <p class="pull-right"><i class="icon-comment pull"></i> <a href="blog-item.html#comments">{{ Topico.numero_respostas }} respostas</a></p>
             </div>
             <p>{{ Topico.Descricao|safe|linebreaks }}</p>
-            
-            
-            <a class="btn btn-link" href="#">Ver Mais <i class="glyphicon glyphicon-remove"></i></a>
+            <a class="btn btn-link" href="{% url "topico_view" topico_id=Topico.id %}">Ver Mais <i class="glyphicon glyphicon-remove"></i></a>
         </div>
         {% endfor %}
         {% endblock %}
