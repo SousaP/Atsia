@@ -30,13 +30,29 @@
 	webkit-box-sizing: border-box;
 	width: 100%;
 }
+html{
+   margin:0;
+   padding:0;
+   height: 100%;
+   box-sizing: border-box;
+}
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
 body
 {
 	background: #f5f5f5;
 	color: #2D2926;
 	font-size: 12px;
-	padding-top: 0px;
-	padding-bottom: 0px;
+	margin:0;
+   	padding:0;
+   	padding-bottom: 80px;
+   	position: relative;
+  	padding-bottom: 6rem;
+  	min-height: 100%;
 }
 body h1,body h2,body h3,body h4,body .created
 {
@@ -506,8 +522,12 @@ ul.rss li::before
 	padding-top: 15px;
 	bottom:0px;
     left:0px;
-    right:0px;
-    position: fixed;
+    right:0px;   	
+    width:100%;
+    position: absolute;
+  	margin-top: -80px; /* negative value of footer height */
+  	height: 80px;
+  	clear: both;
 }
 #footer a
 {
@@ -976,4 +996,8 @@ ul.faq li>div h3
 }
 .floatright {
     float:right;
+}
+#footer-fix {
+   min-height:100%;
+   position:relative;
 }
