@@ -75,3 +75,15 @@ class Participante(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     circulo = models.ForeignKey(CirculoForum)
 
+
+
+class Mensagem(models.Model):
+	Autor = models.ForeignKey(User, related_name='messages_sent')
+	Destinatario = models.ForeignKey(User, related_name='messages_received')
+	Assunto = models.CharField(max_length=50)
+	Texto = models.TextField()
+	data = models.DateTimeField(auto_now = True)
+	Vista = models.BooleanField()
+
+	def __str__(self):
+		return self.Assunto

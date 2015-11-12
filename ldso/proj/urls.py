@@ -34,6 +34,9 @@ urlpatterns = patterns('',
 	url(r'^topico/(?P<topico_id>[0-9]+)/$', 'proj.views.topico_view', name= 'topico_view'),
 
 	url(r'^topico/(?P<topico_id>[0-9]+)/comentario/$', 'proj.views.post_comentario', name= 'post_comentario'),
+
+	url(r'^forum/mensagens/$', 'proj.views.mensagens_view', name= 'mensagens_view'),
+
 	
 	url(r'^about/$', ListView.as_view(
                         queryset=Blog.objects.all().order_by("-date"),

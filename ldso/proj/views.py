@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from proj.models import Blog, Circulos, Emails, Topico, CirculoForum, Participante, Musica, Comentario
+from proj.models import Blog, Circulos, Emails, Topico, CirculoForum, Participante, Musica, Comentario, Mensagem
 from proj.forms import EmailForm, TopicoForm, UserForm, NovoComentario
 
 
@@ -153,3 +153,10 @@ def post_comentario(request, topico_id):
 def logout_view(request):
     logout(request)
     return  HttpResponseRedirect('/')
+
+
+#mensagens
+def mensagens_view(request):
+	messages_to = Mensagem.objects.filter(Destinatario=request.user)
+	#return render(request,'teste.html', {'erro':messages_to})
+	return render(request,'mensagens.html', {'messages_to':messages_to})
