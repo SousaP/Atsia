@@ -960,7 +960,20 @@ ul.faq li>div h3
 
 #address li
 {
-	width: 120px;
-	height: 64px;
+	width: 180px;
+	height: 20px;
 	display: inline-block;
+}
+#social-btns li
+{
+	width: 180px;
+	height: 20px;
+	display: inline-block;
+	align: right;
+}
+.floatleft {
+    float:left;
+}
+.floatright {
+    float:right;
 }
