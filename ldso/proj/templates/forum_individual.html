@@ -35,7 +35,7 @@
             <p>{{ Topico.descricao|safe|linebreaks }}</p>
             
             
-            <a class="btn btn-link" href="#">Ver Mais <i class="icon-angle-right"></i></a>
+           <a class="btn btn-link" href="{% url "topico_view" topico_id=Topico.id %}">Ver Mais <i class="icon-angle-right"></i></a>
         </div>
         {% endfor %}
         {% endblock %}

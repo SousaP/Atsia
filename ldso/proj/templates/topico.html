@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+
+{% include 'top-nav_forum.html' %}
+
+<body>
+                <div class="blog-item well">
+                    <a href="#"><h2> {{ Topico.titulo }}</h2></a>
+                        <div class="blog-meta clearfix">
+                            <p class="pull-left">
+                              <i class="icon-user"></i> by <a href="#"> {{Topico.autor }}</a> <i class="icon-calendar"></i> {{ Topico.data }}
+                          </p>
+                          <p class="pull-right"><i class="icon-comment pull"></i> <a href="#comments"> {{ Topico.numero_respostas }} comentários </a></p>
+                        </div>
+
+                      <p><img src="images/sample/blog1.jpg" width="100%" alt="" /></p>
+                      <p> {{ Topico.descricao }} </p>
+      
+
+    <!-- Comentarios -->
+        <div id="comments" class="comments">
+
+            <h4>{{ Topico.numero_respostas }} comentários</h4>
+                <div class="comments-list">
+                    {% block content2 %}
+                    {% for Comentario in comentarios %}
+        
+                    <!-- <div class="comment media"> -->
+                <div class="user-info media box">
+                         <div class="pull-left">
+                             <img class="avatar" src="static/img/atsia1.jpg" alt="" />  
+                         </div>
+                        <div class="media-body">
+                        <strong> Por <a href="#"> {{    Comentario.autor    }}</a></strong><br>
+                           <small> {{Comentario.data }} </small><br>
+                                    <p> {{Comentario.comentario }}</p>
+                        </div>
+                     </div>
+                
+                    {% endfor %}
+                    {% endblock %}
+                </div>
+        </div>
+
+
+    </section>
+    <!--/Comentários -->
+
+                 
+      
+
+    <!-- Novo Comentario -->
+    
+        <div class="comment-form">
+            <h4>Deixe um comentário</h4>
+            <form action="comentario/" method="post">
+                <div class="row-fluid">
+                </div>
+                {% csrf_token %}
+                {{form.as_p}}
+               
+
+                <textarea rows="10" name="comentario" id="comentario" required="required" class="form-control" placeholder="Comentário"></textarea>
+
+               
+                <input type="submit" value="Submeter Comentário" class="btn btn-large btn-primary" />
+                </form>
+        </div>
+
+    <!--/Comentario -->
+
+          </div>
+        </div>
+    </div>
+
+    <!--Footer-->
+    <footer id="footer">
+        <div class="container">
+            <div class="row-fluid">
+
+                <div class="span1">
+                    <a id="gototop" class="gototop pull-right" href="#"><i class="icon-angle-up"></i></a>
+                </div>
+                <!--/Goto Top-->
+            </div>
+        </div>
+    </footer>
+    <!--/Footer-->
+
+</body>
+</html>

@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
-from proj.models import Blog, Circulos, Emails, Topico, CirculoForum, Participante, Musica
-from proj.forms import EmailForm, TopicoForm, UserForm
+from proj.models import Blog, Circulos, Emails, Topico, CirculoForum, Participante, Musica, Comentario
+from proj.forms import EmailForm, TopicoForm, UserForm, NovoComentario
 
 
 from django.contrib.auth import authenticate, login
@@ -39,7 +39,7 @@ def forum_view(request, forum_id):
 
 
 
-#recebe post criação post
+#recebe post criacao post
 def post_topico(request, forum_id):
 	erro = "comecou"
 	if request.user.is_authenticated():
@@ -63,7 +63,7 @@ def post_topico(request, forum_id):
 	else:
 		return  render(request,'teste.html', {"erro":erro})
 
-#vista de uma pagina de criação de post
+#vista de uma pagina de criacao de post
 def create_post(request, forum_id):
 	if request.user.is_authenticated():
 		participante = Participante.objects.get(user=request.user.id)
@@ -124,3 +124,26 @@ def edit_names(request, template_name="editarprofile.html"):
     return render_to_response(template_name, locals(),
         context_instance=RequestContext(request))
 
+
+#vista de uma pagina de um Topico
+def topico_view(request, topico_id):
+	comentarios = Comentario.objects.filter(TopicoId=topico_id).order_by("data")
+	topico = Topico.objects.get(id=topico_id)
+	return render(request, 'topico.html', {'comentarios':comentarios, 'Topico': topico})
+
+
+#novo comentario topico	
+@csrf_protect
+def post_comentario(request, topico_id):
+	form = NovoComentario(request.POST)
+	topico = Topico.objects.get(id=topico_id)
+		 
+
+	if form.is_valid():
+		commit = form.save(commit=False)
+		commit.TopicoId = topico
+		commit.autor = request.user
+		commit.save()
+		return render(request,'forum.html')
+	else:
+		return  render(request,'/forum/')
