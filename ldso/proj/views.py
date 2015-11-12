@@ -1,9 +1,10 @@
 from django.shortcuts import render, get_object_or_404
 from proj.models import Blog, Circulos, Emails, Topico, CirculoForum, Participante, Musica, Comentario, Mensagem
 from proj.forms import EmailForm, TopicoForm, UserForm, NovoComentario
-
-
+from django.db.models import Q
+from django.db import connection, transaction
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User, Permission
 from django.http import HttpResponseRedirect
 from django.views.decorators.csrf import csrf_protect
 # Create your views here.
@@ -157,6 +158,16 @@ def logout_view(request):
 
 #mensagens
 def mensagens_view(request):
-	messages_to = Mensagem.objects.filter(Destinatario=request.user)
+	#messages_to = Mensagem.objects.filter(Destinatario=request.user).values('Autor').distinct()
+	messages_to = User.objects.filter(id__in=Mensagem.objects.filter(Destinatario=request.user).values('Autor').distinct()).values('username','id')
 	#return render(request,'teste.html', {'erro':messages_to})
 	return render(request,'mensagens.html', {'messages_to':messages_to})
+
+
+#mensagem
+def single_mensage(request,user_id):
+	pessoa = User.objects.get(id=user_id)
+	message = Mensagem.objects.filter(Q(Autor__in=user_id) | Q(Destinatario__in=user_id)).values('Autor','Texto','data','Destinatario')
+	#return render(request,'teste.html', {'erro':pessoa})
+	return render(request,'mensagem.html', {'mensagens':message, 'pessoa':pessoa})
+	

@@ -22,10 +22,8 @@
             {% block content %}
             {% for mensagem in messages_to %}
             <li>
-             <a href="/mensagem/{{mensagem.id}}">
-               <span class="mail-sender">{{mensagem.Autor}}</span>
-               <span class="mail-subject">{{mensagem.Assunto}}</span>
-               <span class="mail-message-preview">{{mensagem.Texto|safe|slice:":25"}}...</span>
+             <a href="/forum/mensagem/{{mensagem.id}}">
+               <span class="mail-sender">{{mensagem.username}}</span>
              </a>
            </li>
            {% endfor %}
