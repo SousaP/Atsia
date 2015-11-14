@@ -22,6 +22,8 @@ urlpatterns = patterns('',
 
 	url(r'^forum/$', 'proj.views.forum_page', name= 'forum_page'),
 
+	url(r'^forum/logout/$', 'proj.views.logout_view', name= 'logout_view'),
+
 	url(r'^forum/(?P<forum_id>[0-9]+)/$', 'proj.views.forum_view', name= 'forum_view'),
 
 
@@ -32,7 +34,13 @@ urlpatterns = patterns('',
 	url(r'^topico/(?P<topico_id>[0-9]+)/$', 'proj.views.topico_view', name= 'topico_view'),
 
 	url(r'^topico/(?P<topico_id>[0-9]+)/comentario/$', 'proj.views.post_comentario', name= 'post_comentario'),
-	
+
+	url(r'^forum/mensagens/$', 'proj.views.mensagens_view', name= 'mensagens_view'),
+
+	url(r'^forum/mensagem/(?P<user_id>[0-9]+)/$', 'proj.views.single_mensage', name= 'single_mensage'),
+
+	url(r'^forum/post_mensagem/(?P<user_id>[0-9]+)/$', 'proj.views.post_mensagem', name= 'post_mensagem'),
+
 	url(r'^about/$', ListView.as_view(
                         queryset=Blog.objects.all().order_by("-date"),
                         template_name="about.html")),

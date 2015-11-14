@@ -1,0 +1,68 @@
+
+{% include 'top-nav_forum.html' %}
+
+<link rel="stylesheet" href="/static/css/forum/mensagens.css">
+<body>
+
+  <div class="tab-content">
+    <div class="tab-pane active" id="inbox">
+
+      <div class="container">
+       <div class="chat_list">
+         <h2 class="intro-text text-center">Mensagens: {{pessoa.username}} </h2>
+         <ul class="list-group">
+
+          {% block content %}
+          {% for mensagem in mensagens %}
+          <li class="list-group-item">
+            <div class="pull-left hidden-xs">
+              <div>
+                <img class="img-circle" title="User1" alt="User1" data-src="holder.js/40x40/lava">                    
+              </div>
+            </div>
+            <small class="pull-right text-muted">{{mensagem.data}}</small>
+            <div>
+              {% if mensagem.Autor == pessoa.id %}
+              <strong>{{pessoa.username}}</strong>
+              {% else %}
+              <strong>Minha Mensagem</strong>
+              {% endif %}
+              <p class="list-group-item-text">
+                {{mensagem.Texto}}
+              </p>
+            </div>
+          </li>
+          {% endfor %}
+          {% endblock %}
+
+        </ul>
+      </div>
+
+
+      <div class="col-lg-12">
+        <hr>
+        <h3 class="intro-text text-center">Responder
+        </h3>
+        <form action="/forum/post_mensagem/{{pessoa.id}}/" method="post"> 
+          {% csrf_token %}
+          {{form.as_p}}
+          <div class="row">
+            <div class="form-group col-lg-12">
+              <label>Mensagem</label>
+              <textarea name="Texto" class="form-control" rows="6" required></textarea>
+            </div>
+            <div class="form-group col-lg-12">
+
+              <button type="submit" value="submit" class="btn btn-default">Enviar</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+
+{% include 'footer_forum.html' %}
+
+</html>

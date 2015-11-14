@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import Emails, Topico, Comentario
+from .models import Emails, Topico, Comentario, Mensagem
 
 class EmailForm(forms.ModelForm):
 
@@ -29,4 +29,11 @@ class NovoComentario(forms.ModelForm):
 	
 	class Meta:
 		model = Comentario      
-		exclude = ['TopicoId', 'autor']        
+		exclude = ['TopicoId', 'autor']
+
+
+class NovaMensagem(forms.ModelForm):
+	
+	class Meta:
+		model = Mensagem      
+		exclude = ['Autor', 'Destinatario', 'Vista']      

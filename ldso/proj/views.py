@@ -1,9 +1,12 @@
 from django.shortcuts import render, get_object_or_404
-from proj.models import Blog, Circulos, Emails, Topico, CirculoForum, Participante, Musica, Comentario
-from proj.forms import EmailForm, TopicoForm, UserForm, NovoComentario
 from django.utils.translation import gettext as _
 from django.shortcuts import render_to_response, render
-from django.contrib.auth import authenticate, login
+from proj.models import Blog, Circulos, Emails, Topico, CirculoForum, Participante, Musica, Comentario, Mensagem
+from proj.forms import EmailForm, TopicoForm, UserForm, NovoComentario, NovaMensagem
+from django.db.models import Q
+from django.db import connection, transaction
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User, Permission
 from django.http import HttpResponseRedirect
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.models import User
@@ -148,6 +151,7 @@ def post_comentario(request, topico_id):
 	else:
 		return  render(request,'/forum/')
 
+
 #forum - circulos	
 def pessoal_circulo(request):
 	if request.user.is_authenticated():
@@ -157,3 +161,43 @@ def pessoal_circulo(request):
 		return render(request,'novamensagem.html', {"pessoas" : pessoas})
 	else:
 		return  HttpResponseRedirect('/forum/')
+
+
+#logout
+def logout_view(request):
+    logout(request)
+    return  HttpResponseRedirect('/')
+
+
+#mensagens
+def mensagens_view(request):
+	#messages_to = Mensagem.objects.filter(Destinatario=request.user).values('Autor').distinct()
+	messages_to = User.objects.filter(id__in=Mensagem.objects.filter(Destinatario=request.user).values('Autor').distinct()).values('username','id')
+	#return render(request,'teste.html', {'erro':messages_to})
+	return render(request,'mensagens.html', {'messages_to':messages_to})
+
+
+#mensagem
+def single_mensage(request,user_id):
+	pessoa = User.objects.get(id=user_id)
+	message = Mensagem.objects.filter(Q(Autor__in=user_id) | Q(Destinatario__in=user_id)).values('Autor','Texto','data','Destinatario').order_by('data')
+	#return render(request,'teste.html', {'erro':pessoa})
+	return render(request,'mensagem.html', {'mensagens':message, 'pessoa':pessoa})
+
+
+#post mensagem
+@csrf_protect
+def post_mensagem(request,user_id):
+	redirect = '/forum/mensagem/' + user_id + '/'
+	form = NovaMensagem(request.POST)
+	if form.is_valid():
+		commit = form.save(commit=False)
+		commit.Autor = request.user
+		commit.Destinatario = User.objects.get(id=user_id)
+		commit.Vista = False
+		commit.save()
+		return HttpResponseRedirect(redirect)
+	else:
+		return HttpResponseRedirect(redirect)
+	
+
