@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% include 'top-nav_forum.html' %}
+
+<div class="comment-form">
+<h4>Nova Mensagem</h4>
+	<form action="" method="post">
+		<div class="row-fluid">
+		</div>
+		{% csrf_token %}
+		{{form.as_p}}
+
+		{% block content %}
+
+        <div class="dropdown">
+		  <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Destinatario:
+		  <span class="caret"></span></button>
+		  <ul class="dropdown-menu">
+
+		  {% for pessoal in pessoas %}
+		   <li><a href="#">{{ pessoal.username }}</a></li>
+		  {% endfor %}
+
+		  </ul>
+		</div>
+
+        
+        {% endblock %}
+		<textarea rows="10" name="Mensagem" id="Mensagem" required="required" class="form-control" placeholder="Mensagem"></textarea>
+
+
+		<input type="submit" value="Submeter Comentário" class="btn btn-large btn-primary" />
+	</form>
+</div>
+
+
+{% include 'footer_forum.html' %}
+</body>
+
+</html>

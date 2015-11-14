@@ -1,11 +1,12 @@
 from django.shortcuts import render, get_object_or_404
 from proj.models import Blog, Circulos, Emails, Topico, CirculoForum, Participante, Musica, Comentario
 from proj.forms import EmailForm, TopicoForm, UserForm, NovoComentario
-
-
+from django.utils.translation import gettext as _
+from django.shortcuts import render_to_response, render
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponseRedirect
 from django.views.decorators.csrf import csrf_protect
+from django.contrib.auth.models import User
 # Create your views here.
 
 #vista de um post
@@ -110,7 +111,7 @@ def forum_page(request):
 		return  HttpResponseRedirect('/login/')
 
 
-	
+#editar area pessoal	
 def edit_names(request, template_name="editarprofile.html"):
     if request.method == "POST":
         form = UserForm(data=request.POST, instance=request.user)
@@ -120,7 +121,6 @@ def edit_names(request, template_name="editarprofile.html"):
             return HttpResponseRedirect('/areapessoal/')
     else:
         form = UserForm(instance=request.user)
-    page_title = _('Edit user names')
     return render_to_response(template_name, locals(),
         context_instance=RequestContext(request))
 
@@ -147,3 +147,13 @@ def post_comentario(request, topico_id):
 		return render(request,'forum.html')
 	else:
 		return  render(request,'/forum/')
+
+#forum - circulos	
+def pessoal_circulo(request):
+	if request.user.is_authenticated():
+		participante = Participante.objects.get(user=request.user.id)
+		pessoal = Participante.objects.filter(circulo=participante.circulo).values('id')
+		pessoas = User.objects.values('username').filter(id__in=pessoal)
+		return render(request,'novamensagem.html', {"pessoas" : pessoas})
+	else:
+		return  HttpResponseRedirect('/forum/')
