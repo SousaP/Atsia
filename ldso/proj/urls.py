@@ -39,7 +39,8 @@ urlpatterns = patterns('',
 
 	url(r'^forum/mensagem/(?P<user_id>[0-9]+)/$', 'proj.views.single_mensage', name= 'single_mensage'),
 
-	
+	url(r'^forum/post_mensagem/(?P<user_id>[0-9]+)/$', 'proj.views.post_mensagem', name= 'post_mensagem'),
+
 	url(r'^about/$', ListView.as_view(
                         queryset=Blog.objects.all().order_by("-date"),
                         template_name="about.html")),
