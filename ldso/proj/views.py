@@ -130,24 +130,26 @@ def edit_names(request, template_name="editarprofile.html"):
 def topico_view(request, topico_id):
 	comentarios = Comentario.objects.filter(TopicoId=topico_id).order_by("data")
 	topico = Topico.objects.get(id=topico_id)
-	return render(request, 'topico.html', {'comentarios':comentarios, 'Topico': topico})
+	return render(request, 'topico.html', {'comentarios':comentarios, 'topico': topico})
 
 
 #novo comentario topico	
 @csrf_protect
-def post_comentario(request, topico_id):
+def post_comentario(request, topico_id, outro_comentario):
 	form = NovoComentario(request.POST)
 	topico = Topico.objects.get(id=topico_id)
-		 
-
 	if form.is_valid():
 		commit = form.save(commit=False)
 		commit.TopicoId = topico
 		commit.autor = request.user
 		commit.save()
-		return render(request,'forum.html')
+		comentarios = Comentario.objects.filter(TopicoId=topico_id).order_by("data")
+		topico = Topico.objects.get(id=topico_id)
+		return render(request, 'topico.html', {'comentarios':comentarios, 'topico': topico})
 	else:
-		return  render(request,'/forum/')
+		comentarios = Comentario.objects.filter(TopicoId=topico_id).order_by("data")
+		topico = Topico.objects.get(id=topico_id)
+		return render(request,'topico.html', {"erro" : "erro comentario", 'comentarios':comentarios, 'topico': topico})
 
 
 #logout
