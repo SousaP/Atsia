@@ -24,6 +24,11 @@
                         <i class="icon-phone"></i>
                         <strong>Telefone:</strong>  +351 962 730 354
                     </li>
+                    <li>
+                    </li>
+                    <li>
+                        <a href="#" class="crunchify-top"><b>Back to top</b> ↑</a>
+                    </li>
                     <div class="floatright">
                         <a target="_blank" title="find us on Facebook" href="https://www.facebook.com/atsia.pt/"><img alt="follow me on facebook" src="//login.create.net/images/icons/user/facebook_40x40.png"></a> 
                         <a target="_blank" title="follow me on twitter" href="https://twitter.com/atsiapt"><img alt="follow me on twitter" src="//login.create.net/images/icons/user/twitter_40x40.png"></a> 
@@ -34,4 +39,27 @@
             </div>
         </div>
     </footer>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+</script>
+ 
+<script>            
+    jQuery(document).ready(function() {
+        var offset = 220;
+        var duration = 500;
+        jQuery(window).scroll(function() {
+            if (jQuery(this).scrollTop() > offset) {
+                jQuery('.crunchify-top').fadeIn(duration);
+            } else {
+                jQuery('.crunchify-top').fadeOut(duration);
+            }
+        });
+ 
+        jQuery('.crunchify-top').click(function(event) {
+            event.preventDefault();
+            jQuery('html, body').animate({scrollTop: 0}, duration);
+            return false;
+        })
+    });
+</script>
     <!--/Footer-->

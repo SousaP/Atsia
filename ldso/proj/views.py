@@ -6,6 +6,7 @@ from proj.forms import EmailForm, TopicoForm, UserForm, NovoComentario
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect
 from django.views.decorators.csrf import csrf_protect
+from django.db.models import Count
 # Create your views here.
 
 #vista de um post
@@ -30,7 +31,13 @@ def forum_view(request, forum_id):
 		circuloForum = CirculoForum.objects.get(id=forum_id)
 		if circuloForum.id == circulo.id:
 			topicos = Topico.objects.filter(Forum=forum_id)
-			return render(request, 'forum_individual.html', {'topicos':topicos, 'CirculoForum': circuloForum})
+			messages = Comentario.objects.values('TopicoId').annotate(
+     type_count=models.Count("TopicoId")
+).filter(type_count__gt=1).order_by("-TopicoId_count")
+			#lista = zip(topicos, messages)
+			#messages = Comentario.objects.filter(TopicoId__in=topicos)order_by().annotate(Count('TopicoId'))
+			return  render(request,'teste.html', {"erro":messages})
+			# return render(request, 'forum_individual.html', {'lista':lista, 'CirculoForum': circuloForum, 'messages':messages})
 		else:
 			return  HttpResponseRedirect('/login/')
 
