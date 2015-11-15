@@ -1,6 +1,7 @@
 from django.contrib import admin
 # adicionar post no blog
-from proj.models import Blog, Circulos, Emails, CirculoForum, Topico, Musica, Comentario
+
+from proj.models import Blog, Circulos, Emails, CirculoForum, Topico, Musica, Mensagem, Comentario
 
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin
@@ -10,9 +11,8 @@ admin.site.register(Circulos)
 admin.site.register(Emails)
 admin.site.register(CirculoForum)
 admin.site.register(Topico)
-admin.site.register(Musica)
+admin.site.register(Mensagem)
 admin.site.register(Comentario)
-
 
 from proj.models import Participante
 
