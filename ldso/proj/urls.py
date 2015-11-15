@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, include, url
 from django.views.generic import ListView, DetailView
-from proj.models import Blog, Circulos, CirculoForum, Musica
+from proj.models import Blog, Circulos, CirculoForum, Musica, Participante
 
 
 
@@ -39,7 +39,8 @@ urlpatterns = patterns('',
 
 	url(r'^forum/mensagem/(?P<user_id>[0-9]+)/$', 'proj.views.single_mensage', name= 'single_mensage'),
 
-	
+	url(r'^forum/post_mensagem/(?P<user_id>[0-9]+)/$', 'proj.views.post_mensagem', name= 'post_mensagem'),
+
 	url(r'^about/$', ListView.as_view(
                         queryset=Blog.objects.all().order_by("-date"),
                         template_name="about.html")),
@@ -79,6 +80,11 @@ urlpatterns = patterns('',
 					model = Blog,
 					template_name="editarprofile.html")),
 
+	 url(r'^novamensagem/$', 'proj.views.pessoal_circulo', name= 'pessoal_circulo'),
+
+	 #url(r'^novamensagem/$', ListView.as_view(
+      #                  queryset=Participante.objects.all(),
+       #                 template_name="teste.html")),
 
 	url(r'^(?P<pk>\d+)$', DetailView.as_view(
 		model = Blog,

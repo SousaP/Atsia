@@ -43,13 +43,13 @@
         <hr>
         <h3 class="intro-text text-center">Responder
         </h3>
-        <form action="/post_email/" method="post"> 
+        <form action="/forum/post_mensagem/{{pessoa.id}}/" method="post"> 
           {% csrf_token %}
           {{form.as_p}}
           <div class="row">
             <div class="form-group col-lg-12">
               <label>Mensagem</label>
-              <textarea name="Mensagem" class="form-control" rows="6" required></textarea>
+              <textarea name="Texto" class="form-control" rows="6" required></textarea>
             </div>
             <div class="form-group col-lg-12">
 
