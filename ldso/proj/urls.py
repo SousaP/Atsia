@@ -41,6 +41,9 @@ urlpatterns = patterns('',
 
 	url(r'^forum/post_mensagem/(?P<user_id>[0-9]+)/$', 'proj.views.post_mensagem', name= 'post_mensagem'),
 
+	url(r'^forum/post_mensagem/$', 'proj.views.post_mensagem_inicial', name= 'post_mensagem_inicial'),
+
+
 	url(r'^about/$', ListView.as_view(
                         queryset=Blog.objects.all().order_by("-date"),
                         template_name="about.html")),
@@ -80,7 +83,7 @@ urlpatterns = patterns('',
 					model = Blog,
 					template_name="editarprofile.html")),
 
-	 url(r'^novamensagem/$', 'proj.views.pessoal_circulo', name= 'pessoal_circulo'),
+	 url(r'^forum/novamensagem/$', 'proj.views.pessoal_circulo', name= 'pessoal_circulo'),
 
 	 #url(r'^novamensagem/$', ListView.as_view(
       #                  queryset=Participante.objects.all(),

@@ -157,7 +157,8 @@ def pessoal_circulo(request):
 	if request.user.is_authenticated():
 		participante = Participante.objects.get(user=request.user.id)
 		pessoal = Participante.objects.filter(circulo=participante.circulo).values('id')
-		pessoas = User.objects.values('username').filter(id__in=pessoal)
+		pessoas = User.objects.values('username','id').filter(id__in=pessoal)
+		#return render(request,'teste.html', {"erro" : pessoas})
 		return render(request,'novamensagem.html', {"pessoas" : pessoas})
 	else:
 		return  HttpResponseRedirect('/forum/')
@@ -172,9 +173,10 @@ def logout_view(request):
 #mensagens
 def mensagens_view(request):
 	#messages_to = Mensagem.objects.filter(Destinatario=request.user).values('Autor').distinct()
-	messages_to = User.objects.filter(id__in=Mensagem.objects.filter(Destinatario=request.user).values('Autor').distinct()).values('username','id')
+	messages_to = User.objects.filter(id__in=Mensagem.objects.filter( Q(Destinatario=request.user) ).values('Autor').distinct()).values('username','id')
+	messages_sent = User.objects.filter(id__in=Mensagem.objects.filter( Q(Autor=request.user) ).values('Destinatario').distinct()).values('username','id')
 	#return render(request,'teste.html', {'erro':messages_to})
-	return render(request,'mensagens.html', {'messages_to':messages_to})
+	return render(request,'mensagens.html', {'messages_to':messages_to | messages_sent})
 
 
 #mensagem
@@ -201,3 +203,10 @@ def post_mensagem(request,user_id):
 		return HttpResponseRedirect(redirect)
 	
 
+
+#post mensagem
+@csrf_protect
+def post_mensagem_inicial(request):
+	user_id = request.POST.get('Destinatario')
+	#return render(request,'teste.html', {'erro':request.POST})
+	return post_mensagem(request,user_id)
