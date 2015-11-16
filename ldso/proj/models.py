@@ -48,6 +48,7 @@ class Topico(models.Model):
 	Descricao = models.TextField()
 	Autor = models.ForeignKey(User)
 	Autorizado = models.BooleanField()
+	Img = models.ImageField(upload_to = "static/img/forum/topicos/", default='static/img/logo_atsia.jpg')
 
 	def __str__(self):
 		return self.Titulo
