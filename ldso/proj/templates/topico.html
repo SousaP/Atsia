@@ -7,23 +7,29 @@
 {% include 'top-nav_forum.html' %}
 
 <body>
+
+
+  
+
                 <div class="blog-item well">
-                    <a href="#"><h2> {{ Topico.titulo }}</h2></a>
+                  <i class="icon-arrow-left icon-6"></i>
+                     <p> Voltar à lista de Tópicos </p>
+                    <a><h2> {{ topico.Titulo }}</h2></a>
                         <div class="blog-meta clearfix">
                             <p class="pull-left">
-                              <i class="icon-user"></i> by <a href="#"> {{Topico.autor }}</a> <i class="icon-calendar"></i> {{ Topico.data }}
+                              <i class="icon-user"></i> by  {{ topico.Autor }}</a> <i class="icon-calendar"></i> {{ topico.Data }}
                           </p>
-                          <p class="pull-right"><i class="icon-comment pull"></i> <a href="#comments"> {{ Topico.numero_respostas }} comentários </a></p>
+                          <p class="pull-right"><i class="icon-comment pull"></i> comentários </a></p>
                         </div>
 
                       <p><img src="images/sample/blog1.jpg" width="100%" alt="" /></p>
-                      <p> {{ Topico.descricao }} </p>
+                      <p> {{ topico.Descricao }} </p>
       
 
     <!-- Comentarios -->
         <div id="comments" class="comments">
 
-            <h4>{{ Topico.numero_respostas }} comentários</h4>
+            <h4> comentários</h4>
                 <div class="comments-list">
                     {% block content2 %}
                     {% for Comentario in comentarios %}
@@ -34,8 +40,8 @@
                              <img class="avatar" src="static/img/atsia1.jpg" alt="" />  
                          </div>
                         <div class="media-body">
-                        <strong> Por <a href="#"> {{    Comentario.autor    }}</a></strong><br>
-                           <small> {{Comentario.data }} </small><br>
+                        <strong> Por {{    Comentario.autor    }}</a></strong> em 
+                           {{Comentario.data }} <br>
                                     <p> {{Comentario.comentario }}</p>
                         </div>
                      </div>
@@ -50,11 +56,15 @@
     <!--/Comentários -->
 
                  
-      
+    
+
 
     <!-- Novo Comentario -->
-    
+    <div class="user-info media box">
         <div class="comment-form">
+            {% if erro == 'erro comentario' %}
+                <p> Erro ao tentar deixar um comentário! Tente outra vez! </p>
+            {% endif %}
             <h4>Deixe um comentário</h4>
             <form action="comentario/" method="post">
                 <div class="row-fluid">
@@ -69,12 +79,14 @@
                 <input type="submit" value="Submeter Comentário" class="btn btn-large btn-primary" />
                 </form>
         </div>
-
-    <!--/Comentario -->
-
-          </div>
-        </div>
+      </div>
     </div>
+
+  
+
+
+          
+      <!--/Comentario -->
 
    {% include 'footer_forum.html' %}
 

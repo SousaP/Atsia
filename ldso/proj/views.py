@@ -9,6 +9,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User, Permission
 from django.http import HttpResponseRedirect
 from django.views.decorators.csrf import csrf_protect
+from django.db.models import Count
 from django.contrib.auth.models import User
 # Create your views here.
 
@@ -34,7 +35,13 @@ def forum_view(request, forum_id):
 		circuloForum = CirculoForum.objects.get(id=forum_id)
 		if circuloForum.id == circulo.id:
 			topicos = Topico.objects.filter(Forum=forum_id)
-			return render(request, 'forum_individual.html', {'topicos':topicos, 'CirculoForum': circuloForum})
+			messages = Comentario.objects.values('TopicoId').annotate(
+     type_count=models.Count("TopicoId")
+).filter(type_count__gt=1).order_by("-TopicoId_count")
+			#lista = zip(topicos, messages)
+			#messages = Comentario.objects.filter(TopicoId__in=topicos)order_by().annotate(Count('TopicoId'))
+			return  render(request,'teste.html', {"erro":messages})
+			# return render(request, 'forum_individual.html', {'lista':lista, 'CirculoForum': circuloForum, 'messages':messages})
 		else:
 			return  HttpResponseRedirect('/login/')
 
@@ -132,24 +139,26 @@ def edit_names(request, template_name="editarprofile.html"):
 def topico_view(request, topico_id):
 	comentarios = Comentario.objects.filter(TopicoId=topico_id).order_by("data")
 	topico = Topico.objects.get(id=topico_id)
-	return render(request, 'topico.html', {'comentarios':comentarios, 'Topico': topico})
+	return render(request, 'topico.html', {'comentarios':comentarios, 'topico': topico})
 
 
 #novo comentario topico	
 @csrf_protect
-def post_comentario(request, topico_id):
+def post_comentario(request, topico_id, outro_comentario):
 	form = NovoComentario(request.POST)
 	topico = Topico.objects.get(id=topico_id)
-		 
-
 	if form.is_valid():
 		commit = form.save(commit=False)
 		commit.TopicoId = topico
 		commit.autor = request.user
 		commit.save()
-		return render(request,'forum.html')
+		comentarios = Comentario.objects.filter(TopicoId=topico_id).order_by("data")
+		topico = Topico.objects.get(id=topico_id)
+		return render(request, 'topico.html', {'comentarios':comentarios, 'topico': topico})
 	else:
-		return  render(request,'/forum/')
+		comentarios = Comentario.objects.filter(TopicoId=topico_id).order_by("data")
+		topico = Topico.objects.get(id=topico_id)
+		return render(request,'topico.html', {"erro" : "erro comentario", 'comentarios':comentarios, 'topico': topico})
 
 
 #forum - circulos	
