@@ -1,98 +1,103 @@
-<!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+  <!DOCTYPE html>
+  <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+  <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+  <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+  <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
 
-{% include 'top-nav_forum.html' %}
+  {% include 'top-nav_forum.html' %}
 
-<body>
+  <body>
 
 
-  
+    
 
-                <div class="blog-item well">
-                  <i class="icon-arrow-left icon-6"></i>
-                     <p> Voltar à lista de Tópicos </p>
-                    <a><h2> {{ topico.Titulo }}</h2></a>
-                        <div class="blog-meta clearfix">
-                            <p class="pull-left">
-                              <i class="icon-user"></i> Criado por  {{ topico.Autor }}</a> <i class="icon-calendar"></i> {{ topico.Data }}
+                  <div class="blog-item well">
+                    <i class="icon-arrow-left icon-6"></i>
+                       <p> Voltar à lista de Tópicos </p>
+                      <a><h2> {{ topico.Titulo }}</h2></a>
+                          <div class="blog-meta clearfix">
+                              <p class="pull-left">
+                                <i class="icon-user"></i> Criado por  {{ topico.Autor }}</a> <i class="icon-calendar"></i> {{ topico.Data }}
+                          </div>
+                        
+                        <big> <strong> <p> {{ topico.Descricao }} </p></strong></big>
+
+                        {% if topico.Img != 'static/img/logo_atsia.jpg' %}
+                        <div style="height:300px; width:300px;" >
+                        <img class="img-responsive center-block" src="/{{topico.Img}}" >
                         </div>
-                      
-                      <big> <strong> <p> {{ topico.Descricao }} </p></strong></big>
-                       <div style="height:300px; width:300px;" >
-                      <img class="img-responsive center-block" src="/{{topico.Img}}" >
-                      </div>
+                      {% endif %}
+
+                        
+        
+
+      <!-- Comentarios -->
+          <div id="comments">
+
+              <p class="pull-left"><i class="icon-comment pull"></i><h4>    comentários</h4>
+                  <div class="comments-list">
+                      {% block content2 %}
+                      {% for Comentario in comentarios %}
+          
+                      <!-- <div class="comment media"> -->
+                
+                  <div class="user-info media box">
+                           <div class="pull-left">
+                               <img class="avatar" src="static/img/atsia1.jpg" alt="" />  
+                           </div>
+                          <div class="media-body">
+                          <big>
+                          <strong> Por {{    Comentario.autor    }}</a></strong>
+                          </big>
+                          <big class="pull-right text-muted"> em {{Comentario.data }} </big>
+                          <br> <br>            
+                          <big> {{Comentario.comentario }}</big>
+                          <br>
+                          </div>
+                  </div>
+             
+                  
+                      {% endfor %}
+                      {% endblock %}
+                  </div>
+          </div>
+
+      <!--/Comentários -->
+
+                   
       
 
-    <!-- Comentarios -->
-        <div id="comments" class="comments">
 
-            <p class="pull-left"><i class="icon-comment pull"></i><h4>    comentários</h4>
-                <div class="comments-list">
-                    {% block content2 %}
-                    {% for Comentario in comentarios %}
-        
-                    <!-- <div class="comment media"> -->
-                <div class="user-info media box">
-                         <div class="pull-left">
-                             <img class="avatar" src="static/img/atsia1.jpg" alt="" />  
-                         </div>
-                        <div class="media-body">
-                        <big>
-                        <strong> Por {{    Comentario.autor    }}</a></strong>
-                        </big>
-                        <big class="pull-right text-muted"> em {{Comentario.data }} </big>
-                        <br> <br>            
-                        <big> {{Comentario.comentario }}</big>
-                        <br>
-                        </div>
-                     </div>
-                
-                    {% endfor %}
-                    {% endblock %}
-                </div>
-        </div>
+      <!-- Novo Comentario -->
+      <div class="user-info media box">
+          <div class="comment-form">
+              {% if erro == 'erro comentario' %}
+                  <p> Erro ao tentar deixar um comentário! Tente outra vez! </p>
+              {% endif %}
+              <h4>Deixe um comentário</h4>
+              <form action="comentario/" method="post">
+                  <div class="row-fluid">
+                  </div>
+                  {% csrf_token %}
+                  {{form.as_p}}
+                 
 
-
-    </section>
-    <!--/Comentários -->
+                  <textarea rows="10" name="comentario" id="comentario" required="required" class="form-control" placeholder="Comentário"></textarea>
 
                  
+                  <input type="submit" value="Submeter Comentário" class="btn btn-large btn-primary" />
+                  </form>
+          </div>
+        </div>
+    </div>
+
     
 
 
-    <!-- Novo Comentario -->
-    <div class="user-info media box">
-        <div class="comment-form">
-            {% if erro == 'erro comentario' %}
-                <p> Erro ao tentar deixar um comentário! Tente outra vez! </p>
-            {% endif %}
-            <h4>Deixe um comentário</h4>
-            <form action="comentario/" method="post">
-                <div class="row-fluid">
-                </div>
-                {% csrf_token %}
-                {{form.as_p}}
-               
+            
+        <!--/Comentario -->
 
-                <textarea rows="10" name="comentario" id="comentario" required="required" class="form-control" placeholder="Comentário"></textarea>
+     {% include 'footer_forum.html' %}
 
-               
-                <input type="submit" value="Submeter Comentário" class="btn btn-large btn-primary" />
-                </form>
-        </div>
-      </div>
-    </div>
-
-  
-
-
-          
-      <!--/Comentario -->
-
-   {% include 'footer_forum.html' %}
-
-</body>
-</html>
+  </body>
+  </html>
