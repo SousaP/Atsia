@@ -137,7 +137,9 @@ def edit_names(request, template_name="editarprofile.html"):
 def topico_view(request, topico_id):
 	comentarios = Comentario.objects.filter(TopicoId=topico_id).order_by("data")
 	topico = Topico.objects.get(id=topico_id)
-	return render(request, 'topico.html', {'comentarios':comentarios, 'topico': topico})
+	forum = CirculoForum.objects.get(nome=topico.Forum) 
+	respostas = len(comentarios)
+	return render(request, 'topico.html', {'comentarios':comentarios, 'topico': topico, 'respostas': respostas, 'forum': forum})
 
 
 #novo comentario topico	
