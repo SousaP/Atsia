@@ -1,7 +1,7 @@
 from django.contrib import admin
 # adicionar post no blog
 
-from proj.models import Blog, Circulos, Emails, CirculoForum, Topico, Musica, Mensagem, Comentario
+from proj.models import Blog, Circulos, Emails, CirculoForum, Topico, Musica, Mensagem, Comentario, Musica
 
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin
@@ -13,7 +13,7 @@ admin.site.register(CirculoForum)
 admin.site.register(Topico)
 admin.site.register(Mensagem)
 admin.site.register(Comentario)
-
+admin.site.register(Musica)
 from proj.models import Participante
 
 # Define an inline admin descriptor for Employee model

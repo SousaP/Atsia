@@ -26,7 +26,7 @@
     {% block content %}
     {% for Musica in object_list %}
     <li>
-    <a href="../static/media/{{Musica.ficheiro}}" nome="{{Musica.nome}}" desc="{{Musica.descricao}}">{{Musica.nome}}</a></li>
+    <a href="/{{Musica.ficheiro}}" nome="{{Musica.nome}}" desc="{{Musica.descricao}}">{{Musica.nome}}</a></li>
     {% endfor %}
     {% endblock %}
 
