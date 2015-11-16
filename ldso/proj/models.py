@@ -77,7 +77,6 @@ class Participante(models.Model):
     circulo = models.ForeignKey(CirculoForum)
 
 
-
 class Mensagem(models.Model):
 	Autor = models.ForeignKey(User, related_name='messages_sent')
 	Destinatario = models.ForeignKey(User, related_name='messages_received')

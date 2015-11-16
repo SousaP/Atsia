@@ -9,6 +9,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User, Permission
 from django.http import HttpResponseRedirect
 from django.views.decorators.csrf import csrf_protect
+from django.db.models import Count
 from django.contrib.auth.models import User
 # Create your views here.
 
@@ -34,7 +35,11 @@ def forum_view(request, forum_id):
 		circuloForum = CirculoForum.objects.get(id=forum_id)
 		if circuloForum.id == circulo.id:
 			topicos = Topico.objects.filter(Forum=forum_id)
-			return render(request, 'forum_individual.html', {'topicos':topicos, 'CirculoForum': circuloForum})
+			messages = Comentario.objects.values('TopicoId').annotate(Count("TopicoId"))
+			lista = zip(topicos, messages)
+			#messages = Comentario.objects.filter(TopicoId__in=topicos)order_by().annotate(Count('TopicoId'))
+			#return  render(request,'teste.html', {"erro":messages})
+			return render(request, 'forum_individual.html', {'lista':lista, 'CirculoForum': circuloForum, 'messages':messages})
 		else:
 			return  HttpResponseRedirect('/login/')
 
@@ -147,11 +152,11 @@ def post_comentario(request, topico_id, outro_comentario):
 		commit.save()
 		comentarios = Comentario.objects.filter(TopicoId=topico_id).order_by("data")
 		topico = Topico.objects.get(id=topico_id)
-		return render(request, 'topico.html', {'comentarios':comentarios, 'topico': topico})
+		return HttpResponseRedirect('/topico/' + topico_id + '/')
 	else:
 		comentarios = Comentario.objects.filter(TopicoId=topico_id).order_by("data")
 		topico = Topico.objects.get(id=topico_id)
-		return render(request,'topico.html', {"erro" : "erro comentario", 'comentarios':comentarios, 'topico': topico})
+		return HttpResponseRedirect('topico/' + topico_id + '/')
 
 
 #forum - circulos	
@@ -159,7 +164,8 @@ def pessoal_circulo(request):
 	if request.user.is_authenticated():
 		participante = Participante.objects.get(user=request.user.id)
 		pessoal = Participante.objects.filter(circulo=participante.circulo).values('id')
-		pessoas = User.objects.values('username').filter(id__in=pessoal)
+		pessoas = User.objects.values('username','id').filter(id__in=pessoal)
+		#return render(request,'teste.html', {"erro" : pessoas})
 		return render(request,'novamensagem.html', {"pessoas" : pessoas})
 	else:
 		return  HttpResponseRedirect('/forum/')
@@ -174,9 +180,10 @@ def logout_view(request):
 #mensagens
 def mensagens_view(request):
 	#messages_to = Mensagem.objects.filter(Destinatario=request.user).values('Autor').distinct()
-	messages_to = User.objects.filter(id__in=Mensagem.objects.filter(Destinatario=request.user).values('Autor').distinct()).values('username','id')
+	messages_to = User.objects.filter(id__in=Mensagem.objects.filter( Q(Destinatario=request.user) ).values('Autor').distinct()).values('username','id')
+	messages_sent = User.objects.filter(id__in=Mensagem.objects.filter( Q(Autor=request.user) ).values('Destinatario').distinct()).values('username','id')
 	#return render(request,'teste.html', {'erro':messages_to})
-	return render(request,'mensagens.html', {'messages_to':messages_to})
+	return render(request,'mensagens.html', {'messages_to':messages_to | messages_sent})
 
 
 #mensagem
@@ -190,7 +197,6 @@ def single_mensage(request,user_id):
 #post mensagem
 @csrf_protect
 def post_mensagem(request,user_id):
-	redirect = '/forum/mensagem/' + user_id + '/'
 	form = NovaMensagem(request.POST)
 	if form.is_valid():
 		commit = form.save(commit=False)
@@ -198,8 +204,15 @@ def post_mensagem(request,user_id):
 		commit.Destinatario = User.objects.get(id=user_id)
 		commit.Vista = False
 		commit.save()
-		return HttpResponseRedirect(redirect)
+		return HttpResponseRedirect('/forum/mensagem/' + user_id + '/')
 	else:
-		return HttpResponseRedirect(redirect)
+		return HttpResponseRedirect('/forum/mensagem/' + user_id + '/')
 	
 
+
+#post mensagem
+@csrf_protect
+def post_mensagem_inicial(request):
+	user_id = request.POST.get('Destinatario')
+	#return render(request,'teste.html', {'erro':request.POST})
+	return post_mensagem(request,user_id)

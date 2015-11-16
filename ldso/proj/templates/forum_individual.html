@@ -25,12 +25,12 @@
     <section id="terms-use" class="container">
 
         {% block content %}
-        {% for Topico in topicos %}
+        {% for Topico, Message in lista %}
         
         <div class="blog-item well">
             <a href="#"><h2>{{ Topico.Titulo }}</h2></a>   
             <div class="blog-meta clearfix">
-                <p class="pull-right"><i class="icon-comment pull"></i> <a href="blog-item.html#comments">{{ Topico.numero_respostas }} respostas</a></p>
+                <p class="pull-right"><a href="blog-item.html#comments">{{ Message.TopicoId__count }} respostas</a></p>
             </div>
             <p>{{ Topico.Descricao|safe|linebreaks }}</p>
             <a class="btn btn-link" href="{% url "topico_view" topico_id=Topico.id %}">Ver Mais <i class="glyphicon glyphicon-remove"></i></a>

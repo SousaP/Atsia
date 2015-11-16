@@ -108,7 +108,7 @@ body h3,body h4
 }
 a
 {
-	color: #ffcc33;
+	color: #2D2926;
 	moz-transition: 300ms;
 	o-transition: 300ms;
 	transition: 300ms;
@@ -1000,4 +1000,27 @@ ul.faq li>div h3
 #footer-fix {
    min-height:100%;
    position:relative;
+}
+
+.crunchify-top:hover {
+	color: #fff !important;
+	background-color: #ed702b;
+	text-decoration: none;
+}
+ 
+.crunchify-top {
+	display: none;
+	position: fixed;
+	bottom: 1rem;
+	right: 1rem;
+	width: 3.2rem;
+	height: 3.2rem;
+	line-height: 3.2rem;
+	font-size: 1.4rem;
+	color: #fff;
+	background-color: rgba(0,0,0,0.3);
+	text-decoration: none;
+	border-radius: 3.2rem;
+	text-align: center;
+	cursor: pointer;
 }
