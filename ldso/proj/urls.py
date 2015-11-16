@@ -58,6 +58,8 @@ urlpatterns = patterns('',
 
 	url(r'^post_User/$', 'proj.views.edit_names', name= 'edit_names'),
 
+	url(r'^teste/$', 'proj.views.verifica_mensagens', name= 'verifica_mensagens'),
+
 	url(r'^oquefazemos/$', ListView.as_view(
                         queryset=Blog.objects.all().order_by("-date"),
                         template_name="oquefazemos.html")),

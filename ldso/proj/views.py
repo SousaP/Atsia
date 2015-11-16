@@ -39,7 +39,8 @@ def forum_view(request, forum_id):
 			lista = zip(topicos, messages)
 			#messages = Comentario.objects.filter(TopicoId__in=topicos)order_by().annotate(Count('TopicoId'))
 			#return  render(request,'teste.html', {"erro":messages})
-			return render(request, 'forum_individual.html', {'lista':lista, 'CirculoForum': circuloForum, 'messages':messages})
+			nr_mensagens = verifica_mensagens(request)
+			return render(request, 'forum_individual.html', {'lista':lista, 'CirculoForum': circuloForum, 'messages':messages, "nr_mensagens" : nr_mensagens})
 		else:
 			return  HttpResponseRedirect('/login/')
 
@@ -114,7 +115,8 @@ def forum_page(request):
 	if request.user.is_authenticated():
 		participante = Participante.objects.get(user=request.user.id)
 		circulo = CirculoForum.objects.filter(nome=participante.circulo)
-		return render(request,'forum.html', {"object_list" : circulo})
+		nr_mensagens = verifica_mensagens(request)
+		return render(request,'forum.html', {"object_list" : circulo, "nr_mensagens" : nr_mensagens})
 	else:
 		return  HttpResponseRedirect('/login/')
 
@@ -137,7 +139,8 @@ def edit_names(request, template_name="editarprofile.html"):
 def topico_view(request, topico_id):
 	comentarios = Comentario.objects.filter(TopicoId=topico_id).order_by("data")
 	topico = Topico.objects.get(id=topico_id)
-	return render(request, 'topico.html', {'comentarios':comentarios, 'topico': topico})
+	nr_mensagens = verifica_mensagens(request)
+	return render(request, 'topico.html', {'comentarios':comentarios, 'topico': topico, "nr_mensagens" : nr_mensagens})
 
 
 #novo comentario topico	
@@ -179,17 +182,21 @@ def logout_view(request):
 
 #mensagens
 def mensagens_view(request):
-	#messages_to = Mensagem.objects.filter(Destinatario=request.user).values('Autor').distinct()
-	messages_to = User.objects.filter(id__in=Mensagem.objects.filter( Q(Destinatario=request.user) ).values('Autor').distinct()).values('username','id')
-	messages_sent = User.objects.filter(id__in=Mensagem.objects.filter( Q(Autor=request.user) ).values('Destinatario').distinct()).values('username','id')
-	#return render(request,'teste.html', {'erro':messages_to})
-	return render(request,'mensagens.html', {'messages_to':messages_to | messages_sent})
+	messages_received_False = Mensagem.objects.filter( Q(Destinatario=request.user),Vista=False).values('Autor','Vista','Destinatario').distinct()
+	messages_received_True = Mensagem.objects.filter( Q(Destinatario=request.user),Vista=True).values('Autor','Vista').distinct()
+	users_received_True = User.objects.filter(Q(id__in=messages_received_True.values('Autor'))).exclude(id__in=messages_received_False.values('Autor')).values('username','id')
+	users_received_False = User.objects.filter(id__in=messages_received_False.values('Autor')).values('username','id')
+	messages_sent = Mensagem.objects.filter( Q(Autor=request.user)).exclude(Q(Autor__in=messages_received_True.values('Destinatario')) | Q(Autor__in=messages_received_False.values('Destinatario'))).values('Destinatario','Vista').distinct()
+	users_sent = User.objects.filter(id__in=messages_sent.values('Destinatario')).values('username','id')
+	#return render(request,'teste.html', {'erro':users_received_True})
+	return render(request,'mensagens.html', {'messages':users_received_True | users_sent, 'messases_not_read' : users_received_False})
 
 
 #mensagem
 def single_mensage(request,user_id):
 	pessoa = User.objects.get(id=user_id)
 	message = Mensagem.objects.filter(Q(Autor__in=user_id) | Q(Destinatario__in=user_id)).values('Autor','Texto','data','Destinatario').order_by('data')
+	Mensagem.objects.filter(Autor=user_id,Destinatario=request.user.id).update(Vista=True)
 	#return render(request,'teste.html', {'erro':pessoa})
 	return render(request,'mensagem.html', {'mensagens':message, 'pessoa':pessoa})
 
@@ -216,3 +223,9 @@ def post_mensagem_inicial(request):
 	user_id = request.POST.get('Destinatario')
 	#return render(request,'teste.html', {'erro':request.POST})
 	return post_mensagem(request,user_id)
+
+
+def verifica_mensagens(request):
+	nr_mensagens = Mensagem.objects.filter(Destinatario = request.user,Vista=False)
+	nr_mensagens = len(nr_mensagens)
+	return nr_mensagens

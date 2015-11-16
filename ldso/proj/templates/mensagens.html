@@ -19,8 +19,17 @@
 
            <ul class="mail-list">
 
+
             {% block content %}
-            {% for mensagem in messages_to %}
+            {% for mensagem in messases_not_read %}
+            <li>
+             <a href="/forum/mensagem/{{mensagem.id}}">
+               <span class="mail-sender">{{mensagem.username}} [Nao Lida]</span>
+             </a>
+           </li>
+           {% endfor %}
+
+            {% for mensagem in messages %}
             <li>
              <a href="/forum/mensagem/{{mensagem.id}}">
                <span class="mail-sender">{{mensagem.username}}</span>
