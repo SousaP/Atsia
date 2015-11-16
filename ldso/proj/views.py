@@ -35,13 +35,11 @@ def forum_view(request, forum_id):
 		circuloForum = CirculoForum.objects.get(id=forum_id)
 		if circuloForum.id == circulo.id:
 			topicos = Topico.objects.filter(Forum=forum_id)
-			messages = Comentario.objects.values('TopicoId').annotate(
-     type_count=models.Count("TopicoId")
-).filter(type_count__gt=1).order_by("-TopicoId_count")
-			#lista = zip(topicos, messages)
+			messages = Comentario.objects.values('TopicoId').annotate(Count("TopicoId"))
+			lista = zip(topicos, messages)
 			#messages = Comentario.objects.filter(TopicoId__in=topicos)order_by().annotate(Count('TopicoId'))
-			return  render(request,'teste.html', {"erro":messages})
-			# return render(request, 'forum_individual.html', {'lista':lista, 'CirculoForum': circuloForum, 'messages':messages})
+			#return  render(request,'teste.html', {"erro":messages})
+			return render(request, 'forum_individual.html', {'lista':lista, 'CirculoForum': circuloForum, 'messages':messages})
 		else:
 			return  HttpResponseRedirect('/login/')
 
@@ -154,11 +152,11 @@ def post_comentario(request, topico_id, outro_comentario):
 		commit.save()
 		comentarios = Comentario.objects.filter(TopicoId=topico_id).order_by("data")
 		topico = Topico.objects.get(id=topico_id)
-		return render(request, 'topico.html', {'comentarios':comentarios, 'topico': topico})
+		return HttpResponseRedirect('/topico/' + topico_id + '/')
 	else:
 		comentarios = Comentario.objects.filter(TopicoId=topico_id).order_by("data")
 		topico = Topico.objects.get(id=topico_id)
-		return render(request,'topico.html', {"erro" : "erro comentario", 'comentarios':comentarios, 'topico': topico})
+		return HttpResponseRedirect('topico/' + topico_id + '/')
 
 
 #forum - circulos	
@@ -199,7 +197,6 @@ def single_mensage(request,user_id):
 #post mensagem
 @csrf_protect
 def post_mensagem(request,user_id):
-	redirect = '/forum/mensagem/' + user_id + '/'
 	form = NovaMensagem(request.POST)
 	if form.is_valid():
 		commit = form.save(commit=False)
@@ -207,9 +204,9 @@ def post_mensagem(request,user_id):
 		commit.Destinatario = User.objects.get(id=user_id)
 		commit.Vista = False
 		commit.save()
-		return HttpResponseRedirect(redirect)
+		return HttpResponseRedirect('/forum/mensagem/' + user_id + '/')
 	else:
-		return HttpResponseRedirect(redirect)
+		return HttpResponseRedirect('/forum/mensagem/' + user_id + '/')
 	
 
 

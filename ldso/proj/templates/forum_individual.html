@@ -30,7 +30,7 @@
         <div class="blog-item well">
             <a href="#"><h2>{{ Topico.Titulo }}</h2></a>   
             <div class="blog-meta clearfix">
-                <p class="pull-right"><a href="blog-item.html#comments">{{ Message }} respostas</a></p>
+                <p class="pull-right"><a href="blog-item.html#comments">{{ Message.TopicoId__count }} respostas</a></p>
             </div>
             <p>{{ Topico.Descricao|safe|linebreaks }}</p>
             <a class="btn btn-link" href="{% url "topico_view" topico_id=Topico.id %}">Ver Mais <i class="glyphicon glyphicon-remove"></i></a>
