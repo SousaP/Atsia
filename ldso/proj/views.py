@@ -152,11 +152,11 @@ def post_comentario(request, topico_id, outro_comentario):
 		commit.save()
 		comentarios = Comentario.objects.filter(TopicoId=topico_id).order_by("data")
 		topico = Topico.objects.get(id=topico_id)
-		return HttpResponseRedirect('/topico/' + topico_id + '/')
+		return HttpResponseRedirect('/forum/topico/' + topico_id + '/')
 	else:
 		comentarios = Comentario.objects.filter(TopicoId=topico_id).order_by("data")
 		topico = Topico.objects.get(id=topico_id)
-		return HttpResponseRedirect('topico/' + topico_id + '/')
+		return HttpResponseRedirect('/forum/topico/' + topico_id + '/')
 
 
 #forum - circulos	
