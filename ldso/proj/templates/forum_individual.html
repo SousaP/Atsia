@@ -23,14 +23,18 @@
     <!-- Tópicos -->
 
     <section id="terms-use" class="container">
-
+    <div class="media-body">  <h4> <a href="/forum/{{CirculoForum.id}}/CriarTopico" class="pull-right">Novo Tópico </a></h4> </div><br>
         {% block content %}
         {% for Topico, Message in lista %}
         
         <div class="blog-item well">
-            <a href="#"><h2>{{ Topico.Titulo }}</h2></a>   
+            <a href="/forum/topico/{{Topico.id}}/"><h2>{{ Topico.Titulo }}</h2></a>   
             <div class="blog-meta clearfix">
+            {% if Message.TopicoId == Topico.id %}
                 <p class="pull-right"><a href="blog-item.html#comments">{{ Message.TopicoId__count }} respostas</a></p>
+            {%else %}
+            <p class="pull-right"><a href="blog-item.html#comments">0 respostas</a></p>
+            {% endif %}
             </div>
             <p>{{ Topico.Descricao|safe|linebreaks }}</p>
             <a class="btn btn-link" href="/forum/topico/{{Topico.id}}/">Ver Mais <i class="glyphicon glyphicon-remove"></i></a>

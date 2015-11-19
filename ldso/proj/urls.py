@@ -81,7 +81,7 @@ urlpatterns = patterns('',
 					model = Blog,
 					template_name="areapessoal.html")),
 
-	 url(r'^editarperfil/$', ListView.as_view(
+	 url(r'^forum/editarperfil/$', ListView.as_view(
 					model = Blog,
 					template_name="editarprofile.html")),
 

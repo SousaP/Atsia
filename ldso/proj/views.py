@@ -11,6 +11,7 @@ from django.http import HttpResponseRedirect
 from django.views.decorators.csrf import csrf_protect
 from django.db.models import Count
 from django.contrib.auth.models import User
+from itertools import cycle
 # Create your views here.
 
 #vista de um post
@@ -35,12 +36,11 @@ def forum_view(request, forum_id):
 		circuloForum = CirculoForum.objects.get(id=forum_id)
 		if circuloForum.id == circulo.id:
 			topicos = Topico.objects.filter(Forum=forum_id)
-			messages = Comentario.objects.values('TopicoId').annotate(Count("TopicoId"))
-			lista = zip(topicos, messages)
-			#messages = Comentario.objects.filter(TopicoId__in=topicos)order_by().annotate(Count('TopicoId'))
-			#return  render(request,'teste.html', {"erro":messages})
+			messages = Comentario.objects.filter(TopicoId__in=topicos).values('TopicoId').annotate(Count('TopicoId'))
+			zip_list = zip(topicos, cycle(messages)) if len(topicos) > len(messages) else zip(cycle(topicos), messages)
+			#return  render(request,'teste.html', {"erro":zip_list})
 			nr_mensagens = verifica_mensagens(request)
-			return render(request, 'forum_individual.html', {'lista':lista, 'CirculoForum': circuloForum, 'messages':messages, "nr_mensagens" : nr_mensagens})
+			return render(request, 'forum_individual.html', {'lista':zip_list, 'CirculoForum': circuloForum, 'messages':messages, "nr_mensagens" : nr_mensagens})
 		else:
 			return  HttpResponseRedirect('/login/')
 
@@ -128,7 +128,7 @@ def edit_names(request, template_name="editarprofile.html"):
         if form.is_valid():
             user = form.save(commit=False)
             user.save()
-            return HttpResponseRedirect('/areapessoal/')
+            return HttpResponseRedirect('/forum/areapessoal/')
     else:
         form = UserForm(instance=request.user)
     return render_to_response(template_name, locals(),
