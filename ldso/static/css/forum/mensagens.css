@@ -79,3 +79,9 @@ ul.mail-list li span.mail-message-preview{
 .mail-search{
     border-bottom-color:#7FBCC9!important; 
 }
+
+.img-circle{
+    height:38px
+    width:auto;/*maintain aspect ratio*/
+    max-width:38px;
+}
