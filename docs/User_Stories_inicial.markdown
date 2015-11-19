@@ -1,0 +1,5 @@
+|  ID 	|    Descrição   |   Prioridade  |   Dificuldade |
+|---	|----            |---	         |---	
+|   	|   	    	 |   	         |   	
+|   	|   	    	 |   	         |   	
+|   	|   	    	 |   	         |   	
