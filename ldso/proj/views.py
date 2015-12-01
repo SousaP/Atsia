@@ -65,9 +65,10 @@ def post_topico(request, forum_id):
 				commit.Autor = request.user
 				commit.Forum = circuloForum
 				commit.Autorizado = False
-				commit.Img = request.FILES['Img'] # this is my file
-				fileName, extension = os.path.splitext(commit.Img.name)
-				commit.Img.name = str(commit.id) + str(extension)
+				if request.FILES.get('Img') != None:
+					commit.Img = request.FILES['Img'] # this is my file
+					fileName, extension = os.path.splitext(commit.Img.name)
+					commit.Img.name = str(commit.id) + str(extension)
 				commit.save()
 				return HttpResponseRedirect('/forum/')
 			else:
@@ -126,7 +127,7 @@ def forum_page(request):
 
 
 #editar area pessoal	
-def edit_names(request, template_name="editarprofile.html"):
+def edit_names(request):
     if request.method == "POST":
         form = UserForm(request.POST,request.FILES,instance=request.user)
         if form.is_valid():
@@ -135,7 +136,7 @@ def edit_names(request, template_name="editarprofile.html"):
             	request.user.set_password(request.POST.get("password"))
             	request.user.save()
             user.save()
-            if request.FILES['Img'] != None:
+            if request.FILES.get('Img') != None:
             	participante = Participante.objects.get(user=request.user)
             	participante.Img = request.FILES['Img']
             	fileName, extension = os.path.splitext(participante.Img.name)
@@ -144,7 +145,7 @@ def edit_names(request, template_name="editarprofile.html"):
             return HttpResponseRedirect('/forum/areapessoal/')
     else:
         form = UserForm(instance=request.user)
-        return render_to_response(template_name, locals(),context_instance=RequestContext(request))
+        return render_to_response('editarprofile.html', locals(),context_instance=RequestContext(request))
 
 
 #vista de uma pagina de um Topico
