@@ -2,10 +2,9 @@
 <html lang="en">
 
 {% include 'top-nav_forum.html' %}
-<h4>Nova Mensagem</h4>
 
 <div class="form-group col-lg-12">
-
+<h4 class="" style="margin-top: 1cm;">Enviar Mensagem</h4>
 	<form action="/forum/post_mensagem/" method="post">
 		<div class="row-fluid">
 		</div>
@@ -13,8 +12,8 @@
 		{{form.as_p}}
 
 		{% block content %}
-		<div class="form-group col-lg-4">
-			<label for="sel1">Select list (select one):</label>
+		<div class="form-group" style="max-width: 10cm;">
+			<label for="sel1">A quem quer mandar uma mensagem?</label>
 			<select name="Destinatario" class="form-control" required>
 				{% for pessoal in pessoas %}
 				<option value="{{ pessoal.id }}">{{ pessoal.username }}</option>
@@ -26,7 +25,7 @@
 		<textarea rows="10" name="Texto" id="Mensagem" required="required" class="form-control" placeholder="Mensagem"></textarea>
 
 
-		<input type="submit" value="Enviar Mensagem" class="btn btn-large btn-primary" />
+		<input type="submit" value="Enviar Mensagem" class="btn btn-large btn-primary" style="margin-top: 0.3cm;" />
 	</form>
 </div>
 
