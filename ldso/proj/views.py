@@ -35,11 +35,11 @@ def forum_view(request, forum_id):
 		participante = Participante.objects.get(user=request.user)
 		circulo = CirculoForum.objects.get(nome=participante.circulo)
 		circuloForum = CirculoForum.objects.get(id=forum_id)
-		if circuloForum.id == circulo.id:
+		if (circuloForum.id == circulo.id) | circuloForum.geral:
 			topicos = Topico.objects.filter(Forum=forum_id,Autorizado=True)
 			messages = Comentario.objects.filter(TopicoId__in=topicos).values('TopicoId').annotate(Count('TopicoId'))
 			zip_list = zip(topicos, cycle(messages)) if len(topicos) > len(messages) else zip(cycle(topicos), messages)
-			#return  render(request,'teste.html', {"erro":zip_list})
+			#return  render(request,'teste.html', {"erro":list(zip_list)})
 			nr_mensagens = verifica_mensagens(request)
 			return render(request, 'forum_individual.html', {'lista':zip_list, 'CirculoForum': circuloForum, 'messages':messages, "nr_mensagens" : nr_mensagens})
 		else:
@@ -120,8 +120,9 @@ def forum_page(request):
 	if request.user.is_authenticated():
 		participante = Participante.objects.get(user=request.user.id)
 		circulo = CirculoForum.objects.filter(nome=participante.circulo)
+		geral = CirculoForum.objects.filter(geral=True)
 		nr_mensagens = verifica_mensagens(request)
-		return render(request,'forum.html', {"object_list" : circulo, "nr_mensagens" : nr_mensagens})
+		return render(request,'forum.html', {"object_list" : circulo|geral, "nr_mensagens" : nr_mensagens})
 	else:
 		return  HttpResponseRedirect('/login/')
 
@@ -182,7 +183,7 @@ def post_comentario(request, topico_id, outro_comentario):
 def pessoal_circulo(request):
 	if request.user.is_authenticated():
 		participante = Participante.objects.get(user=request.user.id)
-		pessoal = Participante.objects.filter(circulo=participante.circulo).values('id')
+		pessoal = Participante.objects.values('user')
 		pessoas = User.objects.values('username','id').filter(id__in=pessoal)
 		#return render(request,'teste.html', {"erro" : pessoas})
 		return render(request,'novamensagem.html', {"pessoas" : pessoas})

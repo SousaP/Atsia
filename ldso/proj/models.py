@@ -36,6 +36,7 @@ class CirculoForum(models.Model):
 	nome = models.CharField(max_length = 50)
 	numero_topicos = models.IntegerField(default = '0', editable= True)
 	descricao = models.CharField(max_length = 100)
+	geral = models.BooleanField(default=False) 
 
 	def __str__(self):
 		return self.nome
