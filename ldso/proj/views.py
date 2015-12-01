@@ -251,3 +251,12 @@ def verifica_mensagens(request):
 def area_pessoal(request):
 	img = Participante.objects.get(user=request.user)
 	return render(request,'areapessoal.html', {'user':request.user, 'Img':img.Img})
+
+
+@csrf_protect
+def post_removeCom(request):
+	commentid = request.POST.get('commentid')
+	com = Comentario.objects.get(id=commentid)
+	if com.autor == request.user:
+		com.delete()
+	return HttpResponseRedirect('/forum/topico/' + str(com.TopicoId.id) + '/')

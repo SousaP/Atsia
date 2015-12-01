@@ -43,6 +43,7 @@ urlpatterns = patterns('',
 
 	url(r'^forum/post_mensagem/$', 'proj.views.post_mensagem_inicial', name= 'post_mensagem_inicial'),
 
+	url(r'^forum/post_removeCom/$', 'proj.views.post_removeCom', name= 'post_removeCom'),
 
 	url(r'^about/$', ListView.as_view(
                         queryset=Blog.objects.all().order_by("-date"),
