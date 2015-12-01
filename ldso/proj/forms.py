@@ -18,10 +18,9 @@ class UserForm(forms.ModelForm):
 
 
 class TopicoForm(forms.ModelForm):
-
 	class Meta:
 		model = Topico
-		exclude = ['Forum','Autor','Autorizado']
+		exclude = ['Forum','Autor','Autorizado', 'Img']
 		#fields = ('Forum', 'Titulo', 'Descricao', 'Autor', 'Autorizado',)
 
 

@@ -58,12 +58,13 @@ def post_topico(request, forum_id):
 		circuloForum = CirculoForum.objects.get(id=forum_id)
 		if circuloForum.id == circulo.id:
 			#se ta tudo ta tudo			
-			form = TopicoForm(request.POST)
+			form = TopicoForm(request.POST, request.FILES)
 			if form.is_valid():
 				commit = form.save(commit=False)
 				commit.Autor = request.user
 				commit.Forum = circuloForum
 				commit.Autorizado = False
+				commit.Img = request.FILES['Img'] # this is my file
 				commit.save()
 				return HttpResponseRedirect('/forum/')
 			else:
