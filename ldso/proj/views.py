@@ -35,7 +35,7 @@ def forum_view(request, forum_id):
 		circulo = CirculoForum.objects.get(nome=participante.circulo)
 		circuloForum = CirculoForum.objects.get(id=forum_id)
 		if circuloForum.id == circulo.id:
-			topicos = Topico.objects.filter(Forum=forum_id)
+			topicos = Topico.objects.filter(Forum=forum_id,Autorizado=True)
 			messages = Comentario.objects.filter(TopicoId__in=topicos).values('TopicoId').annotate(Count('TopicoId'))
 			zip_list = zip(topicos, cycle(messages)) if len(topicos) > len(messages) else zip(cycle(topicos), messages)
 			#return  render(request,'teste.html', {"erro":zip_list})
