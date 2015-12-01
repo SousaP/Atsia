@@ -10,11 +10,11 @@
    
           <div class="panel panel-info">
             <div class="panel-heading" >
-              <h3 class="panel-title" ><center>{{request.user.username}}</center></h3>
+              <h3 class="panel-title" ><center>{{user.username}}</center></h3>
             </div>
             <div class="panel-body">
               <div class="row">
-                <div class="col-md-3 col-lg-3 " align="center"> <img alt="User Pic" src="/static/img/icon_user.png" class="img-circle img-responsive"> </div>
+                <div class="col-md-3 col-lg-3 " align="center"> <img alt="User Pic" src="/{{Img}}" class="img-circle img-responsive"> </div>
                 
                 <div class=" col-md-9 col-lg-9 "> 
                   <table class="table table-user-information">
@@ -27,26 +27,26 @@
                          <tr>
                              <tr>
                         <td>Primeiro Nome</td>
-                        {% if request.user.first_name != "" %}
-                        <td>{{request.user.first_name}}</td>
+                        {% if user.first_name != "" %}
+                        <td>{{user.first_name}}</td>
                         {% else %}
                          <td>Têm que adiicionar um primeiro nome.</td>
                         {% endif %}
                       </tr>
                         <tr>            
                         <td>Último Nome</td>
-                        {% if request.user.last_name != "" %}
-                        <td>{{request.user.last_name}}</td>
+                        {% if user.last_name != "" %}
+                        <td>{{user.last_name}}</td>
                          {% else %}
                          <td>Têm que adiicionar um último nome.</td>
                         {% endif %}
                       </tr>
                       <tr>
                         <td>Email</td>
-                        {% if request.user.email == "" %}
+                        {% if user.email == "" %}
                               <td>Têm que adiicionar um Email.</td>
                  		{% else %}
-                 		<td>{{request.user.email}}</td>
+                 		<td>{{user.email}}</td>
                    
                         {% endif %}
                      
