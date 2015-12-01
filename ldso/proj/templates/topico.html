@@ -61,7 +61,12 @@
                           <strong> Por {{    Comentario.autor    }}</a></strong>
                           </big>
                           <big class="pull-right text-muted"> em {{Comentario.data }} </big>
-                          <br> <br>            
+                        <!-- Botão para apagar -->
+                        {% if user.Username == Comentario.autor %}
+                            <input type="submit" value="Eliminar Resposta" class="btn btn-large btn-primary" />
+                        {% endif %}
+                      
+                        <br> <br>            
                           <big> {{Comentario.comentario }}</big>
                           <br>
                           </div>
