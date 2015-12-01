@@ -27,7 +27,7 @@
 
                     <h2>{{ blog.title }}
                         <br>
-                        <small> on {{ blog.date }}</small>
+                        <small> on {{ blog.date|date:"d M Y H:i"}}</small>
                     </h2>
                     <div class="col-lg-2">
                     <img class="img-responsive" src="/{{blog.photo_img}} " >

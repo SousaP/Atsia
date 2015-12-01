@@ -28,7 +28,7 @@
                     <p>{{ Circulos.body|safe|linebreaks}}</p>
                     
                     <br>
-                        <p><small> on {{ Circulos.adress }}</small><small> on {{ Circulos.date }}</small></p>
+                        <p><small> on {{ Circulos.adress }}</small><small> on {{ Circulos.date|date:"d M Y H:i" }}</small></p>
                     <hr>
 
                     {% endfor %}
