@@ -35,7 +35,7 @@ STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
-    "C:/Users/Utilizador/Documents/GitHub/LDSO1516T1G4/ldso/static",
+    "C:/Users/Pedro/Documents/GitHub/LDSO1516T1G4/ldso/static",
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.

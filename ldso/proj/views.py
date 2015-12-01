@@ -12,6 +12,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.db.models import Count
 from django.contrib.auth.models import User
 from itertools import cycle
+import os
 # Create your views here.
 
 #vista de um post
@@ -65,6 +66,8 @@ def post_topico(request, forum_id):
 				commit.Forum = circuloForum
 				commit.Autorizado = False
 				commit.Img = request.FILES['Img'] # this is my file
+				fileName, extension = os.path.splitext(commit.Img.name)
+				commit.Img.name = str(commit.id) + str(extension)
 				commit.save()
 				return HttpResponseRedirect('/forum/')
 			else:
@@ -125,20 +128,23 @@ def forum_page(request):
 #editar area pessoal	
 def edit_names(request, template_name="editarprofile.html"):
     if request.method == "POST":
-        form = UserForm(request.POST,request.FILES)
+        form = UserForm(request.POST,request.FILES,instance=request.user)
         if form.is_valid():
             user = form.save(commit=False)
             if request.POST.get("password") == request.POST.get("confirmpassword") and request.POST.get("password") != None and request.POST.get("password") != "":
             	request.user.set_password(request.POST.get("password"))
             	request.user.save()
-            if request.FILES['Img'] != None:
-            	user.Img = request.FILES['Img']
             user.save()
+            if request.FILES['Img'] != None:
+            	participante = Participante.objects.get(user=request.user)
+            	participante.Img = request.FILES['Img']
+            	fileName, extension = os.path.splitext(participante.Img.name)
+            	participante.Img.name = str(request.user.username) + str(extension)
+            	participante.save()
             return HttpResponseRedirect('/forum/areapessoal/')
     else:
         form = UserForm(instance=request.user)
-    return render_to_response(template_name, locals(),
-        context_instance=RequestContext(request))
+        return render_to_response(template_name, locals(),context_instance=RequestContext(request))
 
 
 #vista de uma pagina de um Topico
