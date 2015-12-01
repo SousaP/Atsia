@@ -31,7 +31,7 @@
             <a href="/forum/topico/{{Topico.id}}/"><h2>{{ Topico.Titulo }}</h2></a>   
             <div class="blog-meta clearfix">
             {% if Message.TopicoId == Topico.id %}
-                <p class="pull-right"><a href="blog-item.html#comments">{{ Message.TopicoId__count }} respostas</a></p>
+                <p class="pull-right"><a href="/forum/topico/{{Topico.id}}/">{{ Message.TopicoId__count }} respostas</a></p>
             {%else %}
             <p class="pull-right"><a href="blog-item.html#comments">0 respostas</a></p>
             {% endif %}
