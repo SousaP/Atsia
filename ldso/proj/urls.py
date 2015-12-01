@@ -77,9 +77,7 @@ urlpatterns = patterns('',
                         template_name="radio.html")),
 
 
-	 url(r'^forum/areapessoal/$', ListView.as_view(
-					model = Blog,
-					template_name="areapessoal.html")),
+	 url(r'^forum/areapessoal/$', 'proj.views.area_pessoal', name= 'area_pessoal'),
 
 	 url(r'^forum/editarperfil/$', ListView.as_view(
 					model = Blog,

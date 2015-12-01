@@ -75,6 +75,7 @@ class Musica(models.Model):
 class Participante(models.Model):  
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     circulo = models.ForeignKey(CirculoForum)
+    Img = models.FileField(upload_to = "static/img/participante/avatar/", default='static/img/participante/avatar/default.png')
 
 
 class Mensagem(models.Model):
