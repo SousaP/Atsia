@@ -35,7 +35,7 @@ def forum_view(request, forum_id):
 		circulo = CirculoForum.objects.get(nome=participante.circulo)
 		circuloForum = CirculoForum.objects.get(id=forum_id)
 		if circuloForum.id == circulo.id:
-			topicos = Topico.objects.filter(Forum=forum_id)
+			topicos = Topico.objects.filter(Forum=forum_id,Autorizado=True)
 			messages = Comentario.objects.filter(TopicoId__in=topicos).values('TopicoId').annotate(Count('TopicoId'))
 			zip_list = zip(topicos, cycle(messages)) if len(topicos) > len(messages) else zip(cycle(topicos), messages)
 			#return  render(request,'teste.html', {"erro":zip_list})
@@ -58,12 +58,13 @@ def post_topico(request, forum_id):
 		circuloForum = CirculoForum.objects.get(id=forum_id)
 		if circuloForum.id == circulo.id:
 			#se ta tudo ta tudo			
-			form = TopicoForm(request.POST)
+			form = TopicoForm(request.POST, request.FILES)
 			if form.is_valid():
 				commit = form.save(commit=False)
 				commit.Autor = request.user
 				commit.Forum = circuloForum
 				commit.Autorizado = False
+				commit.Img = request.FILES['Img'] # this is my file
 				commit.save()
 				return HttpResponseRedirect('/forum/')
 			else:
@@ -124,9 +125,14 @@ def forum_page(request):
 #editar area pessoal	
 def edit_names(request, template_name="editarprofile.html"):
     if request.method == "POST":
-        form = UserForm(data=request.POST, instance=request.user)
+        form = UserForm(request.POST,request.FILES)
         if form.is_valid():
             user = form.save(commit=False)
+            if request.POST.get("password") == request.POST.get("confirmpassword") and request.POST.get("password") != None and request.POST.get("password") != "":
+            	request.user.set_password(request.POST.get("password"))
+            	request.user.save()
+            if request.FILES['Img'] != None:
+            	user.Img = request.FILES['Img']
             user.save()
             return HttpResponseRedirect('/forum/areapessoal/')
     else:
@@ -232,3 +238,8 @@ def verifica_mensagens(request):
 	nr_mensagens = Mensagem.objects.filter(Destinatario = request.user,Vista=False)
 	nr_mensagens = len(nr_mensagens)
 	return nr_mensagens
+
+
+def area_pessoal(request):
+	img = Participante.objects.get(user=request.user)
+	return render(request,'areapessoal.html', {'user':request.user, 'Img':img.Img})

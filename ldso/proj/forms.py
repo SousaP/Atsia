@@ -14,13 +14,13 @@ class UserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'email']
+        exclude = ['Img', 'password']
 
 
 class TopicoForm(forms.ModelForm):
-
 	class Meta:
 		model = Topico
-		exclude = ['Forum','Autor','Autorizado']
+		exclude = ['Forum','Autor','Autorizado', 'Img']
 		#fields = ('Forum', 'Titulo', 'Descricao', 'Autor', 'Autorizado',)
 
 

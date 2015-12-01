@@ -48,7 +48,7 @@ class Topico(models.Model):
 	Descricao = models.TextField()
 	Autor = models.ForeignKey(User)
 	Autorizado = models.BooleanField()
-	Img = models.ImageField(upload_to = "static/img/forum/topicos/", default='static/img/logo_atsia.jpg')
+	Img = models.FileField(upload_to = "static/img/forum/topicos/", default='static/img/logo_atsia.jpg')
 
 	def __str__(self):
 		return self.Titulo
@@ -75,6 +75,7 @@ class Musica(models.Model):
 class Participante(models.Model):  
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     circulo = models.ForeignKey(CirculoForum)
+    Img = models.FileField(upload_to = "static/img/participante/avatar/", default='static/img/participante/avatar/default.png')
 
 
 class Mensagem(models.Model):

@@ -6,11 +6,16 @@ from proj.models import Blog, Circulos, Emails, CirculoForum, Topico, Musica, Me
 from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin
 # Register your models here.
+
+class TopicoAdmin(admin.ModelAdmin):
+    list_filter  = ('Autorizado',)
+
+
 admin.site.register(Blog)
 admin.site.register(Circulos)
 admin.site.register(Emails)
 admin.site.register(CirculoForum)
-admin.site.register(Topico)
+admin.site.register(Topico,TopicoAdmin)
 admin.site.register(Mensagem)
 admin.site.register(Comentario)
 admin.site.register(Musica)
