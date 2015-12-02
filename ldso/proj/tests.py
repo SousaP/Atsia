@@ -1,12 +1,18 @@
 from django.test import TestCase
-from proj.models import Comentario, Topico
+from datetime import datetime
+from django.contrib.auth.models import User
+from proj.models import *
 
 class TestBasic2(TestCase):
     "Show setup and teardown"
 
     def setUp(self):
         self.a = 1
-        Comentario.objects.create(TopicoId="2", comentario="Teste comment", autor="1")
+        self.Circle = CirculoForum.objects.create(nome="Braga", descricao="Test Circle")
+        self.Utilizador = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
+        self.Part = Participante.objects.create(user=self.Utilizador, circulo=self.Circle)
+        self.Topic = Topico.objects.create(Forum=self.Circle, Titulo="Teste Topic", Descricao="Test Topic Description", Autor=self.Utilizador, Autorizado=True)
+        Comentario.objects.create(TopicoId=self.Topic, comentario="Teste comment", autor=self.Utilizador)
 
     def tearDown(self):
         del self.a
@@ -23,13 +29,8 @@ class TestBasic2(TestCase):
     def test_fail(self):
         "This test should fail"
         assert self.a == 2
-
-    #setUp(self):
-     #   Comentario.objects.create(TopicoId="2", comentario="Teste comment", autor="1")
-        #Comentario.objects.create(TopicoId="1", comentario="Teste comment 2.0", autor="3")
-
+        
     def test_comentarios(self):
         """Comentarios corretos identified"""
-        topico = Topico.objects.get(TopicoId="1")
-        test1 = Comentario.objects.get(topico.TopicoId)
-        self.assertEqual(test1.comentario, 'Teste comment"')
+        test1 = Comentario.objects.get(TopicoId=self.Topic)
+        self.assertEqual(test1.comentario, 'Teste comment')
