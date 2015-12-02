@@ -11,7 +11,7 @@ class TestBasic2(TestCase):
         self.Circle = CirculoForum.objects.create(nome="Braga", descricao="Test Circle")
         self.Utilizador = User.objects.create_user('john', 'lennon@thebeatles.com', 'johnpassword')
         self.Part = Participante.objects.create(user=self.Utilizador, circulo=self.Circle)
-        self.Topic = Topico.objects.create(Forum=self.Circle, Titulo="Teste Topic", Descricao="Test Topic Description", Autor=self.Utilizador, Autorizado=True)
+        self.Topic = Topico.objects.create(Forum=self.Circle, Titulo="Teste Topic", Descricao="Test Topic Description", Autor=self.Utilizador, Autorizado=False)
         Comentario.objects.create(TopicoId=self.Topic, comentario="Teste comment", autor=self.Utilizador)
 
     def tearDown(self):
@@ -29,8 +29,16 @@ class TestBasic2(TestCase):
     def test_fail(self):
         "This test should fail"
         assert self.a == 2
-        
+
     def test_comentarios(self):
-        """Comentarios corretos identified"""
+        """Correct commentaries identified"""
         test1 = Comentario.objects.get(TopicoId=self.Topic)
         self.assertEqual(test1.comentario, 'Teste comment')
+
+    def test_default_authorized(self):
+        """Check default from topico"""
+        self.assertEqual(self.Topic.Autorizado, False)
+
+    def test_default_geral(self):
+        """Check default from CirculoForum"""
+        self.assertEqual(self.Circle.geral, False)
