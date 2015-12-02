@@ -4,19 +4,22 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="56dp"
+    android:paddingTop="20dp"
     android:paddingLeft="24dp"
     android:paddingRight="24dp"
-    android:background="@drawable/atsia1">
+    android:background="@drawable/plis">
 
     <ImageView android:src="@drawable/logo"
         android:layout_width="wrap_content"
         android:layout_height="72dp"
+        android:layout_marginTop="1dp"
         android:layout_marginBottom="24dp"
         android:layout_gravity="center_horizontal" />
 
     <TextView
         android:layout_width="wrap_content"
+        android:textColor="#000000"
+        android:textStyle="bold"
         android:text="Username"
         android:layout_height="wrap_content" />
 
@@ -29,6 +32,8 @@
 
     <TextView
     android:layout_width="wrap_content"
+    android:textColor="#000000"
+    android:textStyle="bold"
     android:text="Password"
     android:layout_height="wrap_content" />
 
@@ -46,6 +51,8 @@
         android:layout_width="match_parent"
         android:layout_marginTop="24dp"
         android:layout_marginBottom="24dp"
+        android:textColor="#000000"
+        android:textStyle="bold"
         android:padding="12dp"
         android:layout_gravity="center_horizontal"
         android:layout_height="wrap_content" />
