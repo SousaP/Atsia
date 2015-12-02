@@ -31,6 +31,7 @@ function init(){
         run($(link),audio[0]);
     });
 }
+
 function run(link, player){
         player.src = link.attr('href');
         nome1 = link.attr('nome');

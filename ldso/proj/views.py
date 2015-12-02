@@ -280,3 +280,12 @@ def api_user(request):
 			return JsonResponse({'result':'fail'})
 
 
+def api_forum(request):
+	if request.method == "GET":
+		name= request.GET.get('nome')
+		user = User.objects.get(username=name)
+		participante = Participante.objects.get(user=user.id)
+		circulo = CirculoForum.objects.filter(nome=participante.circulo)
+		geral = CirculoForum.objects.filter(geral=True)
+		data = serializers.serialize('json', circulo|geral)
+		return HttpResponse(data)
