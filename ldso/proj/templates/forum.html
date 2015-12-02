@@ -33,7 +33,7 @@
                 <p class="pull-right"><i class="icon-comment pull"></i> <a href="{% url "forum_view" forum_id=CirculoForum.id %}">
                 {{ CirculoForum.numero_topicos }} Tópicos</a></p>
             </div>
-            <p>{{ CirculoForum.descricao|safe|linebreaks }}</p>
+            <p>{{ CirculoForum.descricao|safe|linebreaks}}</p>
 
 
             <a href="{% url "forum_view" forum_id=CirculoForum.id %}"  class="btn btn-link">Ver Mais <i class="icon-angle-right"></i></a>

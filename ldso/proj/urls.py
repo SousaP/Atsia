@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 from django.conf.urls import patterns, include, url
 from django.views.generic import ListView, DetailView
 from proj.models import Blog, Circulos, CirculoForum, Musica, Participante

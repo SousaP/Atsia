@@ -36,9 +36,10 @@
             <p class="pull-right"><a href="blog-item.html#comments">0 respostas</a></p>
             {% endif %}
             </div>
-            <p>{{ Topico.Descricao|safe|linebreaks }}</p>
+            <p>{{ Topico.Descricao|safe|linebreaks|slice:":250" }}...</p>
             <a class="btn btn-link" href="/forum/topico/{{Topico.id}}/">Ver Mais <i class="glyphicon glyphicon-search"></i></a>
         </div>
+        
         {% endfor %}
         {% endblock %}
     </section>

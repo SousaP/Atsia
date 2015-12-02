@@ -17,10 +17,10 @@
           <li class="list-group-item">
             <div class="pull-left hidden-xs">
               <div>
-                <img class="img-circle" title="User1" alt="User1" src="/static/img/user2.png">                    
+                 <img style="width: 50px; height: 50px;" class="img-circle" title={{mensagem.autor}} alt={{mensagem.autor}} src=/{{ img.Img }}>                     
               </div>
             </div>
-            <small class="pull-right text-muted">{{mensagem.data}}</small>
+            <small class="pull-right text-muted">{{mensagem.data|date:"d M Y H:i"}}</small>
             <div>
               {% if mensagem.Autor == pessoa.id %}
               <strong>{{pessoa.username}}</strong>

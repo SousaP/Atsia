@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 from django.shortcuts import render, get_object_or_404
 from django.utils.translation import gettext as _
 from django.shortcuts import render_to_response, render
@@ -143,22 +144,28 @@ def edit_names(request):
             	fileName, extension = os.path.splitext(participante.Img.name)
             	participante.Img.name = str(request.user.username) + str(extension)
             	participante.save()
-            return HttpResponseRedirect('/forum/areapessoal/')
+            return HttpResponseRedirect('/forum/')
     else:
         form = UserForm(instance=request.user)
-        return render_to_response('editarprofile.html', locals(),context_instance=RequestContext(request))
+        return render_to_response('login.html', locals(),context_instance=RequestContext(request))
 
 
 #vista de uma pagina de um Topico
 def topico_view(request, topico_id):
-	comentarios = Comentario.objects.filter(TopicoId=topico_id).order_by("data")
-	topico = Topico.objects.get(id=topico_id)
-	nr_mensagens = verifica_mensagens(request)
-	forum = CirculoForum.objects.get(nome=topico.Forum) 
-	respostas = len(comentarios)
-	return render(request, 'topico.html', {'comentarios':comentarios, 'topico': topico, "nr_mensagens" : nr_mensagens, 'respostas': respostas, 'forum': forum})
-
-
+    comentarios = Comentario.objects.filter(TopicoId=topico_id).order_by("data")
+    topico = Topico.objects.get(id=topico_id)
+    nr_mensagens = verifica_mensagens(request)
+    forum = CirculoForum.objects.get(nome=topico.Forum) 
+    respostas = len(comentarios)
+    #utilizadores = Comentario.objects.filter(TopicoId=topico_id).order_by("data").values('autor')
+    images = []
+    for comentario in comentarios:
+        image = Participante.objects.filter(user=comentario.autor).values('Img')
+        images.append(image)
+    #teste = Participante.objects.all()
+    #participantes = teste.filter(user__in=comentarios.values('autor')).values('Img')
+    participantes_fotos = zip(cycle(comentarios), images)
+    return render(request, 'topico.html', {'comentarios_fotos': participantes_fotos, 'comentarios':comentarios, 'topico': topico, "nr_mensagens" : nr_mensagens, 'respostas': respostas, 'forum': forum})
 
 #novo comentario topico	
 @csrf_protect
@@ -213,6 +220,7 @@ def mensagens_view(request):
 def single_mensage(request,user_id):
 	pessoa = User.objects.get(id=user_id)
 	message = Mensagem.objects.filter(Q(Autor__in=user_id) | Q(Destinatario__in=user_id)).values('Autor','Texto','data','Destinatario').order_by('data')
+    
 	Mensagem.objects.filter(Autor=user_id,Destinatario=request.user.id).update(Vista=True)
 	#return render(request,'teste.html', {'erro':pessoa})
 	return render(request,'mensagem.html', {'mensagens':message, 'pessoa':pessoa})

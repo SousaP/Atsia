@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 from django.db import models
 from django.contrib.auth.models import User
 # Create your models here.
@@ -51,7 +52,7 @@ class Topico(models.Model):
 	Autorizado = models.BooleanField()
 	Img = models.FileField(upload_to = "static/img/forum/topicos/", default='static/img/logo_atsia.jpg')
 
-	def __str__(self):
+	def __unicode__(self):
 		return self.Titulo
 
 class Comentario(models.Model):
@@ -60,7 +61,7 @@ class Comentario(models.Model):
 	comentario = models.CharField(max_length=200)
 	autor = models.ForeignKey(User)
 
-	def __str__(self):
+	def __unicode__(self):
 		return self.comentario
 
 class Musica(models.Model):
@@ -86,5 +87,5 @@ class Mensagem(models.Model):
 	data = models.DateTimeField(auto_now = True)
 	Vista = models.BooleanField()
 
-	def __str__(self):
+	def __unicode__(self):
 		return self.Texto
