@@ -99,4 +99,16 @@ urlpatterns = patterns('',
 		queryset=Blog.objects.all().order_by("-date"),
 		template_name="base.html")),
 
+	url(r'^api/user/$', 'proj.views.api_user', name= 'api_user'),
+
+	url(r'^api/forum/$', 'proj.views.api_forum', name= 'api_forum'),
+
+	url(r'^api/circulo/$', 'proj.views.api_circulo', name= 'api_circulo'),
+
+	url(r'^api/mensagens/$', 'proj.views.api_forum', name= 'api_forum'), #notDone
+
+	url(r'^api/mensagem/$', 'proj.views.api_mensagem', name= 'api_mensagem'), 
+
+	url(r'^api/comentario/$', 'proj.views.api_comentario', name= 'api_comentario'),
+
 	)

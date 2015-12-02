@@ -13,6 +13,8 @@ from django.views.decorators.csrf import csrf_protect
 from django.db.models import Count
 from django.contrib.auth.models import User
 from itertools import cycle
+from django.http import JsonResponse, HttpResponse
+from django.core import serializers
 import os
 # Create your views here.
 
@@ -219,8 +221,7 @@ def mensagens_view(request):
 #mensagem
 def single_mensage(request,user_id):
 	pessoa = User.objects.get(id=user_id)
-	message = Mensagem.objects.filter(Q(Autor__in=user_id) | Q(Destinatario__in=user_id)).values('Autor','Texto','data','Destinatario').order_by('data')
-    
+	message = Mensagem.objects.filter(Q(Autor=user_id,Destinatario=request.user.id) | Q(Destinatario=user_id,Autor=request.user.id)).values('Autor','Texto','data','Destinatario').order_by('data')
 	Mensagem.objects.filter(Autor=user_id,Destinatario=request.user.id).update(Vista=True)
 	#return render(request,'teste.html', {'erro':pessoa})
 	return render(request,'mensagem.html', {'mensagens':message, 'pessoa':pessoa})
@@ -268,3 +269,70 @@ def post_removeCom(request):
 	if com.autor == request.user:
 		com.delete()
 	return HttpResponseRedirect('/forum/topico/' + str(com.TopicoId.id) + '/')
+
+
+
+def api_user(request):
+	if request.method == "GET":
+		password = request.GET.get('passwordL')
+		username = request.GET.get('usernameL')
+		user = authenticate(username=username, password=password)
+		response_data = {}
+		if user is not None:
+			if user.is_active:
+				return JsonResponse({'result':'sucess'})
+			else:
+				return JsonResponse({'result':'fail'})
+		else:
+			return JsonResponse({'result':'fail'})
+
+
+def api_forum(request):
+	if request.method == "GET":
+		name= request.GET.get('nome')
+		user = User.objects.get(username=name)
+		participante = Participante.objects.get(user=user.id)
+		circulo = CirculoForum.objects.filter(nome=participante.circulo)
+		geral = CirculoForum.objects.filter(geral=True)
+		data = serializers.serialize('json', circulo|geral)
+		return HttpResponse(data, content_type='application/json')
+
+
+def api_circulo(request):
+	if request.method == "GET":
+		forum_id = request.GET.get('forum_id')
+		topicos = Topico.objects.filter(Forum=forum_id,Autorizado=True)
+		data = serializers.serialize('json', topicos)
+		return HttpResponse(data, content_type='application/json')
+
+
+def api_mensagem(request):
+	if request.method == "POST":
+		autor = request.POST.get('Autor')
+		dest = request.POST.get('Destinatario')
+		text = request.POST.get('Texto')
+		autor = User.objects.get(username = autor)
+		dest = User.objects.get(username = dest)
+		novamensagem = Mensagem.objects.create(Autor=autor, Destinatario=dest,Texto=text,Vista = False)
+		return JsonResponse({'result':'ok'})
+
+def api_comentario(request):
+	if request.method == "POST":
+		autor = request.POST.get('Autor')
+		idtopico = request.POST.get('idTopico')
+		text = request.POST.get('Texto')
+		autor = User.objects.get(username = autor)
+		topico = Topico.objects.get(id = idtopico)
+		NovoComentario = Comentario.objects.create(autor=autor, comentario=text,TopicoId=idtopico)
+		return JsonResponse({'result':'ok'})
+
+def api_mensagens(request):
+	if request.method == "GET":
+		autor = request.POST.get('username')
+		otherUser = request.POST.get('otherUser')
+		idtopico = request.POST.get('idTopico')
+		pessoa = User.objects.get(id=user_id)
+		message = Mensagem.objects.filter(Q(Autor=user_id,Destinatario=request.user.id) | Q(Destinatario=user_id,Autor=request.user.id)).values('Autor','Texto','data','Destinatario').order_by('data')
+		Mensagem.objects.filter(Autor=user_id,Destinatario=request.user.id).update(Vista=True)
+		data = serializers.serialize('json', message)
+		return HttpResponse(data, content_type='application/json')
