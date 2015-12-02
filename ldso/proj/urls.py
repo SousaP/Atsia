@@ -98,4 +98,6 @@ urlpatterns = patterns('',
 		queryset=Blog.objects.all().order_by("-date"),
 		template_name="base.html")),
 
+	url(r'^api/user/$', 'proj.views.api_user', name= 'api_user'),
+
 	)

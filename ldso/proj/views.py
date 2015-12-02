@@ -12,6 +12,8 @@ from django.views.decorators.csrf import csrf_protect
 from django.db.models import Count
 from django.contrib.auth.models import User
 from itertools import cycle
+from django.http import JsonResponse, HttpResponse
+from django.core import serializers
 import os
 # Create your views here.
 
@@ -260,3 +262,21 @@ def post_removeCom(request):
 	if com.autor == request.user:
 		com.delete()
 	return HttpResponseRedirect('/forum/topico/' + str(com.TopicoId.id) + '/')
+
+
+
+def api_user(request):
+	if request.method == "GET":
+		password = request.GET.get('passwordL')
+		username = request.GET.get('usernameL')
+		user = authenticate(username=username, password=password)
+		response_data = {}
+		if user is not None:
+			if user.is_active:
+				return JsonResponse({'result':'sucess'})
+			else:
+				return JsonResponse({'result':'fail'})
+		else:
+			return JsonResponse({'result':'fail'})
+
+
