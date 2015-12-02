@@ -13,21 +13,23 @@
          <ul class="list-group">
 
           {% block content %}
-          {% for mensagem in mensagens %}
+          {% for mensagem, images in messages_zip %}
           <li class="list-group-item">
             <div class="pull-left hidden-xs">
               <div>
-                 <img style="width: 50px; height: 50px;" class="img-circle" title={{mensagem.autor}} alt={{mensagem.autor}} src=/{{ img.Img }}>                     
+                    {% for img in images %}
+                 <img style="width: 40px; height: 40px;" class="img-circle" title={{mensagem.Autor}} alt={{mensagem.Autor}} src=/{{ img.Img }}>                     
+                  {% endfor %}
               </div>
             </div>
             <small class="pull-right text-muted">{{mensagem.data|date:"d M Y H:i"}}</small>
-            <div>
+            <div >
               {% if mensagem.Autor == pessoa.id %}
-              <strong>{{pessoa.username}}</strong>
+              <strong style="padding: 0 10px;">    {{pessoa.username}}</strong>
               {% else %}
-              <strong>Minha Mensagem</strong>
+              <strong style="padding: 0 10px;">Minha Mensagem</strong>
               {% endif %}
-              <p class="list-group-item-text">
+              <p class="list-group-item-text" style="padding: 0 80px;">
                 {{mensagem.Texto}}
               </p>
             </div>

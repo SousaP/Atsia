@@ -220,11 +220,16 @@ def mensagens_view(request):
 
 #mensagem
 def single_mensage(request,user_id):
-	pessoa = User.objects.get(id=user_id)
-	message = Mensagem.objects.filter(Q(Autor=user_id,Destinatario=request.user.id) | Q(Destinatario=user_id,Autor=request.user.id)).values('Autor','Texto','data','Destinatario').order_by('data')
-	Mensagem.objects.filter(Autor=user_id,Destinatario=request.user.id).update(Vista=True)
-	#return render(request,'teste.html', {'erro':pessoa})
-	return render(request,'mensagem.html', {'mensagens':message, 'pessoa':pessoa})
+    pessoa = User.objects.get(id=user_id)
+    message = Mensagem.objects.filter(Q(Autor=user_id,Destinatario=request.user.id) | Q(Destinatario=user_id,Autor=request.user.id)).values('Autor','Texto','data','Destinatario').order_by('data')
+    images = []
+    for me in message:
+        image = Participante.objects.filter(user=me.get('Autor')).values('Img')
+        images.append(image)
+    messages_zip = zip(cycle(message),images)
+    Mensagem.objects.filter(Autor=user_id,Destinatario=request.user.id).update(Vista=True)
+    #return render(request,'teste.html', {'erro':pessoa})
+    return render(request,'mensagem.html', {'messages_zip':messages_zip, 'pessoa':pessoa})
 
 
 #post mensagem
