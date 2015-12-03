@@ -120,14 +120,18 @@ def login_view(request):
 
 #forum - circulos	
 def forum_page(request):
-	if request.user.is_authenticated():
-		participante = Participante.objects.get(user=request.user.id)
-		circulo = CirculoForum.objects.filter(nome=participante.circulo)
-		geral = CirculoForum.objects.filter(geral=True)
-		nr_mensagens = verifica_mensagens(request)
-		return render(request,'forum.html', {"object_list" : circulo|geral, "nr_mensagens" : nr_mensagens})
-	else:
-		return  HttpResponseRedirect('/login/')
+    if request.user.is_authenticated():
+        participante = Participante.objects.get(user=request.user.id)
+        circulo = CirculoForum.objects.filter(nome=participante.circulo)
+        geral = CirculoForum.objects.filter(geral=True)
+        topicos = Topico.objects.filter(Forum__in=circulo | geral).values('Forum').annotate(Count('Forum'))
+        nr_mensagens = verifica_mensagens(request)
+        circulos = circulo|geral
+        circulos_zip = zip(circulos, topicos)
+        #return render(request,'teste.html', {"erro" : circulos_zip, "nr_mensagens" : nr_mensagens})
+        return render(request,'forum.html', {"object_list" : circulos_zip, "topicos":topicos, "nr_mensagens" : nr_mensagens})
+    else:
+        return  HttpResponseRedirect('/login/')
 
 
 #editar area pessoal	

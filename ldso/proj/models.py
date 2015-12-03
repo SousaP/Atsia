@@ -39,7 +39,7 @@ class CirculoForum(models.Model):
 	descricao = models.CharField(max_length = 100)
 	geral = models.BooleanField(default=False) 
 
-	def __str__(self):
+	def __unicode__(self):
 		return self.nome
 
 
