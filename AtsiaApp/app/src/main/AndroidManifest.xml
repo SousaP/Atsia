@@ -22,6 +22,10 @@
             android:name=".Login"
             android:label="@string/title_activity_login"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".forum"
+            android:label="@string/title_activity_forum"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
