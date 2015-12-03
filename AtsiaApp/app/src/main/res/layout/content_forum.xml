@@ -9,7 +9,7 @@
     android:background="@drawable/plis">
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="592dp"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:layout_marginLeft="0mm"

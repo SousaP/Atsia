@@ -297,10 +297,10 @@ def api_forum(request):
 		name= request.GET.get('nome')
 		user = User.objects.get(username=name)
 		participante = Participante.objects.get(user=user.id)
-		circulo = CirculoForum.objects.filter(nome=participante.circulo)
-		geral = CirculoForum.objects.filter(geral=True)
-		data = serializers.serialize('json', circulo|geral)
-		return HttpResponse(data, content_type='application/json')
+		circulo = CirculoForum.objects.filter(nome=participante.circulo).values("nome")
+		geral = CirculoForum.objects.filter(geral=True).values("nome")
+		#data = serializers.serialize('json', circulo|geral)
+		return HttpResponse(circulo|geral, content_type='application/json')
 
 
 def api_circulo(request):

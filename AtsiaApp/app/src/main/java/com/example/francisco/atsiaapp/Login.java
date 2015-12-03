@@ -97,8 +97,12 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
 
                 if(result == "fail")
-                    ;
-                else if(result == "sucess");
+                    startActivity(new Intent(this, Login.class)) ;
+                else if(result == "sucess") {
+                    Intent intent = new Intent(this, forum.class);
+                    intent.putExtra("Nome", username);
+                    startActivity(intent);
+                }
 
                 break;
 
