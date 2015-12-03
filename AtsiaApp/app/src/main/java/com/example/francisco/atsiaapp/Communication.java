@@ -3,20 +3,19 @@ package com.example.francisco.atsiaapp;
 /**
  * Created by Utilizador on 02/12/2015.
  */
-
-        import java.io.BufferedReader;
-        import java.io.DataOutputStream;
-        import java.io.InputStreamReader;
-        import java.net.HttpURLConnection;
-        import java.net.URL;
-        import java.nio.charset.Charset;
-        import java.security.MessageDigest;
-        import java.security.NoSuchAlgorithmException;
-
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.Charset;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class Communication {
     private final static String USER_AGENT = "Mozilla/5.0";
-    static String link = "http://localhost:8000/api";
+
+    static String link = "http://10.0.2.2:8000/api";
 
 
     public static String httpPost(String Url, String[] paramName,

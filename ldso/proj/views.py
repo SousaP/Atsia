@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 from django.shortcuts import render, get_object_or_404
 from django.utils.translation import gettext as _
 from django.shortcuts import render_to_response, render
@@ -145,22 +146,28 @@ def edit_names(request):
             	fileName, extension = os.path.splitext(participante.Img.name)
             	participante.Img.name = str(request.user.username) + str(extension)
             	participante.save()
-            return HttpResponseRedirect('/forum/areapessoal/')
+            return HttpResponseRedirect('/forum/')
     else:
         form = UserForm(instance=request.user)
-        return render_to_response('editarprofile.html', locals(),context_instance=RequestContext(request))
+        return render_to_response('login.html', locals(),context_instance=RequestContext(request))
 
 
 #vista de uma pagina de um Topico
 def topico_view(request, topico_id):
-	comentarios = Comentario.objects.filter(TopicoId=topico_id).order_by("data")
-	topico = Topico.objects.get(id=topico_id)
-	nr_mensagens = verifica_mensagens(request)
-	forum = CirculoForum.objects.get(nome=topico.Forum) 
-	respostas = len(comentarios)
-	return render(request, 'topico.html', {'comentarios':comentarios, 'topico': topico, "nr_mensagens" : nr_mensagens, 'respostas': respostas, 'forum': forum})
-
-
+    comentarios = Comentario.objects.filter(TopicoId=topico_id).order_by("data")
+    topico = Topico.objects.get(id=topico_id)
+    nr_mensagens = verifica_mensagens(request)
+    forum = CirculoForum.objects.get(nome=topico.Forum) 
+    respostas = len(comentarios)
+    #utilizadores = Comentario.objects.filter(TopicoId=topico_id).order_by("data").values('autor')
+    images = []
+    for comentario in comentarios:
+        image = Participante.objects.filter(user=comentario.autor).values('Img')
+        images.append(image)
+    #teste = Participante.objects.all()
+    #participantes = teste.filter(user__in=comentarios.values('autor')).values('Img')
+    participantes_fotos = zip(cycle(comentarios), images)
+    return render(request, 'topico.html', {'comentarios_fotos': participantes_fotos, 'comentarios':comentarios, 'topico': topico, "nr_mensagens" : nr_mensagens, 'respostas': respostas, 'forum': forum})
 
 #novo comentario topico	
 @csrf_protect
@@ -213,11 +220,16 @@ def mensagens_view(request):
 
 #mensagem
 def single_mensage(request,user_id):
-	pessoa = User.objects.get(id=user_id)
-	message = Mensagem.objects.filter(Q(Autor__in=user_id) | Q(Destinatario__in=user_id)).values('Autor','Texto','data','Destinatario').order_by('data')
-	Mensagem.objects.filter(Autor=user_id,Destinatario=request.user.id).update(Vista=True)
-	#return render(request,'teste.html', {'erro':pessoa})
-	return render(request,'mensagem.html', {'mensagens':message, 'pessoa':pessoa})
+    pessoa = User.objects.get(id=user_id)
+    message = Mensagem.objects.filter(Q(Autor=user_id,Destinatario=request.user.id) | Q(Destinatario=user_id,Autor=request.user.id)).values('Autor','Texto','data','Destinatario').order_by('data')
+    images = []
+    for me in message:
+        image = Participante.objects.filter(user=me.get('Autor')).values('Img')
+        images.append(image)
+    messages_zip = zip(cycle(message),images)
+    Mensagem.objects.filter(Autor=user_id,Destinatario=request.user.id).update(Vista=True)
+    #return render(request,'teste.html', {'erro':pessoa})
+    return render(request,'mensagem.html', {'messages_zip':messages_zip, 'pessoa':pessoa})
 
 
 #post mensagem
@@ -280,3 +292,52 @@ def api_user(request):
 			return JsonResponse({'result':'fail'})
 
 
+def api_forum(request):
+	if request.method == "GET":
+		name= request.GET.get('nome')
+		user = User.objects.get(username=name)
+		participante = Participante.objects.get(user=user.id)
+		circulo = CirculoForum.objects.filter(nome=participante.circulo)
+		geral = CirculoForum.objects.filter(geral=True)
+		data = serializers.serialize('json', circulo|geral)
+		return HttpResponse(data, content_type='application/json')
+
+
+def api_circulo(request):
+	if request.method == "GET":
+		forum_id = request.GET.get('forum_id')
+		topicos = Topico.objects.filter(Forum=forum_id,Autorizado=True)
+		data = serializers.serialize('json', topicos)
+		return HttpResponse(data, content_type='application/json')
+
+
+def api_mensagem(request):
+	if request.method == "POST":
+		autor = request.POST.get('Autor')
+		dest = request.POST.get('Destinatario')
+		text = request.POST.get('Texto')
+		autor = User.objects.get(username = autor)
+		dest = User.objects.get(username = dest)
+		novamensagem = Mensagem.objects.create(Autor=autor, Destinatario=dest,Texto=text,Vista = False)
+		return JsonResponse({'result':'ok'})
+
+def api_comentario(request):
+	if request.method == "POST":
+		autor = request.POST.get('Autor')
+		idtopico = request.POST.get('idTopico')
+		text = request.POST.get('Texto')
+		autor = User.objects.get(username = autor)
+		topico = Topico.objects.get(id = idtopico)
+		NovoComentario = Comentario.objects.create(autor=autor, comentario=text,TopicoId=idtopico)
+		return JsonResponse({'result':'ok'})
+
+def api_mensagens(request):
+	if request.method == "GET":
+		autor = request.POST.get('username')
+		otherUser = request.POST.get('otherUser')
+		idtopico = request.POST.get('idTopico')
+		pessoa = User.objects.get(id=user_id)
+		message = Mensagem.objects.filter(Q(Autor=user_id,Destinatario=request.user.id) | Q(Destinatario=user_id,Autor=request.user.id)).values('Autor','Texto','data','Destinatario').order_by('data')
+		Mensagem.objects.filter(Autor=user_id,Destinatario=request.user.id).update(Vista=True)
+		data = serializers.serialize('json', message)
+		return HttpResponse(data, content_type='application/json')

@@ -23,34 +23,34 @@
         <form action="/post_User/" method="post"  enctype="multipart/form-data"> 
           {% csrf_token %}
           {{form.as_p}}
-          <div class="form-group">
+          <!-- <div class="form-group">
             <label class="col-lg-3 control-label">Primeiro Nome:</label>
             <div class="col-lg-8">
-              <input class="form-control" name="first_name" type="text" value="{{request.user.first_name}}">
+              <input class="form-control" name="first_name" type="text" value="{{request.user.first_name}}" >
             </div>
           </div>
           <div class="form-group">
             <label class="col-lg-3 control-label">Último Nome:</label>
             <div class="col-lg-8">
-              <input class="form-control" name="last_name" type="text" value="{{request.user.last_name}}">
+              <input class="form-control" name="last_name" type="text" value="{{request.user.last_name}}" >
             </div>
-          </div>
+          </div> -->
           <div class="form-group">
             <label class="col-lg-3 control-label">Email:</label>
             <div class="col-lg-8">
-              <input class="form-control" name="email" type="text" value="{{request.user.email}}">
+              <input class="form-control" name="email" type="email" value="{{request.user.email}}" >
             </div>
           </div>
           <div class="form-group">
             <label class="col-md-3 control-label">Password:</label>
             <div class="col-md-8">
-              <input class="form-control" name="password" type="password" value="">
+              <input class="form-control" name="password" type="password" value="" >
             </div>
           </div>
           <div class="form-group">
             <label class="col-md-3 control-label">Confirm password:</label>
             <div class="col-md-8">
-              <input class="form-control" name="confirmpassword" type="password" value="">
+              <input class="form-control" name="confirmpassword" type="password" value="" >
             </div>
           </div>
           <div class="form-group">

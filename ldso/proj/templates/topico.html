@@ -1,10 +1,11 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
   <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
   <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
   <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
   <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
 
   {% include 'top-nav_forum.html' %}
+
 
   <body>
     <!-- Título -->  
@@ -19,25 +20,28 @@
     </section>
 
 
-    
 
     <div class="blog-item well">
 
 
       <a href="{% url "forum_view" forum_id=forum.id %}"  class="btn btn-link"> <i class="icon-arrow-left icon-6"></i> Voltar à lista de Tópicos </a>
+    
       <a><h2> {{ topico.Titulo }}</h2></a>
+    
       <div class="blog-meta clearfix">
         <p class="pull-left">
           <i class="icon-user"></i> Criado por  {{ topico.Autor }}</a> <i class="icon-calendar"></i> {{ topico.Data }}
-        </div>
-
+     </div>
+     <div class="col-lg-12" > 
+         <div class="col-lg-9" > 
         <big> <strong> <p> {{ topico.Descricao }} </p></strong></big>
-
+         </div>
         {% if topico.Img != 'static/img/logo_atsia.jpg' %}
-        <div style="height:300px; width:300px;" >
+    <div class="col-lg-2" style="max-height:300px; max-width:300px;" >
           <img class="img-responsive center-block" src="/{{topico.Img}}" >
-        </div>
+    </div>
         {% endif %}
+        </div>
 
 
         
@@ -48,29 +52,32 @@
           <p> <i class="icon-comment pull-left"></i> <h4>{{ respostas }} respostas </h4> </p>
           <div class="comments-list" style="display: block">
             {% block content2 %}
-            {% for Comentario in comentarios %}
+            {% for comentarios, images in comentarios_fotos %}
 
             <!-- <div class="comment media"> -->
 
             <div class="user-info media box">
              <div class="pull-left">
-               <img class="avatar" src="" alt="" />  
+                 {% for img in images %}
+               <img style="width: 50px; height: 50px;" class="img-circle" title={{comentarios.autor}} alt={{comentarios.autor}} src=/{{ img.Img }}>  
+                 {% endfor %}
              </div>
              <div class="media-body">
               <big>
-                <strong> Por {{    Comentario.autor    }}</a></strong>
+                 
+                <strong> Por {{    comentarios.autor    }}</a></strong>
+               
               </big>
-              <big class="pull-right text-muted"> em {{Comentario.data|date:"d M Y H:i" }} </big>
+              <big class="pull-right text-muted"> em {{comentarios.data|date:"d M Y H:i" }} </big>
               <br> <br>            
-              {% if user == Comentario.autor %}
-             
-
               <br> <br>            
-              <big> {{Comentario.comentario }}</big>
+              <big> {{comentarios.comentario }}</big>
+                
+                {% if user == comentarios.autor %}
                <form action="/forum/post_removeCom/" method="post">
               {% csrf_token %}
                  {{form.as_p}}
-                <input type="text" name="commentid" value="{{Comentario.id}}" hidden>
+                <input type="text" name="commentid" value={{ comentarios.id }} hidden>
                 <input type="submit" value="Remover" class="btn btn-large btn-primary pull-right" />
               </form>
               {% endif %}
@@ -95,7 +102,7 @@
             <p> Erro ao tentar deixar um comentário! Tente outra vez! </p>
             {% endif %}
             <h4>Deixe um comentário</h4>
-            <form action="comentario/" method="post">
+            <form action="comentario/" method="post" accept-charset="utf-8">
               <div class="row-fluid">
               </div>
               {% csrf_token %}

@@ -16,6 +16,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     Button bLogout;
     EditText etUsername, etName, etAge;
+    String nomeUtilizador;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
