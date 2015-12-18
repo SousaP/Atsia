@@ -7,12 +7,17 @@ from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin
 # Register your models here.
 
+
 class TopicoAdmin(admin.ModelAdmin):
     list_filter  = ('Autorizado',)
+    search_fields = ('Titulo',)
 
-
+class ForunsAdmin(admin.ModelAdmin):
+    search_fields = ('title',)    
+    
+    
 admin.site.register(Blog)
-admin.site.register(Circulos)
+admin.site.register(Circulos, ForunsAdmin)
 admin.site.register(Emails)
 admin.site.register(CirculoForum)
 admin.site.register(Topico,TopicoAdmin)
