@@ -34,22 +34,23 @@ def post_email(request):
 
 #vista de uma pagina de Forum
 def forum_view(request, forum_id):
-	if request.user.is_authenticated():
-		participante = Participante.objects.get(user=request.user)
-		circulo = CirculoForum.objects.get(nome=participante.circulo)
-		circuloForum = CirculoForum.objects.get(id=forum_id)
-		if (circuloForum.id == circulo.id) | circuloForum.geral:
-			topicos = Topico.objects.filter(Forum=forum_id,Autorizado=True)
-			messages = Comentario.objects.filter(TopicoId__in=topicos).values('TopicoId').annotate(Count('TopicoId'))
-			zip_list = zip(topicos, cycle(messages)) if len(topicos) > len(messages) else zip(cycle(topicos), messages)
-			#return  render(request,'teste.html', {"erro":list(zip_list)})
-			nr_mensagens = verifica_mensagens(request)
-			return render(request, 'forum_individual.html', {'lista':zip_list, 'CirculoForum': circuloForum, 'messages':messages, "nr_mensagens" : nr_mensagens})
-		else:
-			return  HttpResponseRedirect('/login/')
-
-	else:
-		return  HttpResponseRedirect('/login/')
+    if request.user.is_authenticated():
+        participante = Participante.objects.get(user=request.user)
+        circulo = CirculoForum.objects.get(nome=participante.circulo)
+        circuloForum = CirculoForum.objects.get(id=forum_id)
+        if (circuloForum.id == circulo.id) | circuloForum.geral:
+            topicos = Topico.objects.filter(Forum=forum_id,Autorizado=True)
+            messages = Comentario.objects.filter(TopicoId__in=topicos).values('TopicoId').annotate(Count('TopicoId'))
+            if len(topicos) > len(messages):
+                zip_list = zip(topicos, cycle(messages))
+            else:
+                zip_list = zip(cycle(topicos), messages)
+            nr_mensagens = verifica_mensagens(request)
+            return render(request, 'forum_individual.html', {'lista':zip_list, 'CirculoForum': circuloForum, 'messages':messages, "nr_mensagens":nr_mensagens})
+        else:
+            return  HttpResponseRedirect('/login/')
+    else:
+        return  HttpResponseRedirect('/login/')
 
 
 
@@ -124,11 +125,13 @@ def forum_page(request):
         participante = Participante.objects.get(user=request.user.id)
         circulo = CirculoForum.objects.filter(nome=participante.circulo)
         geral = CirculoForum.objects.filter(geral=True)
-        topicos = Topico.objects.filter(Forum__in=circulo | geral).values('Forum').annotate(Count('Forum'))
+        topicos = Topico.objects.filter(Forum__in=circulo|geral).values('Forum').annotate(Count('Forum'))
         nr_mensagens = verifica_mensagens(request)
         circulos = circulo|geral
-        circulos_zip = zip(circulos, topicos)
-        #return render(request,'teste.html', {"erro" : circulos_zip, "nr_mensagens" : nr_mensagens})
+        if len(circulos) > len(topicos):
+            circulos_zip = zip(circulos, cycle(topicos))
+        else:
+            circulos_zip = zip(cycle(circulos), topicos)
         return render(request,'forum.html', {"object_list" : circulos_zip, "topicos":topicos, "nr_mensagens" : nr_mensagens})
     else:
         return  HttpResponseRedirect('/login/')

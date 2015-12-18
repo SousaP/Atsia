@@ -25,10 +25,10 @@
 
                     <h2>{{ Circulos.title }} </h2>
 
-                    <p>{{ Circulos.body|safe|linebreaks}}</p>
+                    <p>{{ Circulos.descricao|safe|linebreaks}}</p>
                     
                     <br>
-                        <p><small> on {{ Circulos.adress }}</small><small> on {{ Circulos.date|date:"d M Y H:i" }}</small></p>
+                        <p><small> on {{ Circulos.endereco }}</small><small> on {{ Circulos.date|date:"d M Y H:i" }}</small></p>
                     <hr>
 
                     {% endfor %}
