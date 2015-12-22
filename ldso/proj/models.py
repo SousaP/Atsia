@@ -18,7 +18,7 @@ class Circulos(models.Model):
 	endereco = models.TextField()
 	date = models.DateTimeField()
 
-	def __unicode__(self):
+	def __str__(self):
 	    return self.title
 
 
@@ -38,7 +38,7 @@ class CirculoForum(models.Model):
 	descricao = models.CharField(max_length = 100)
 	geral = models.BooleanField(default=False) 
 
-	def __unicode__(self):
+	def __str__(self):
 		return self.nome
 
 
@@ -51,7 +51,7 @@ class Topico(models.Model):
 	Autorizado = models.BooleanField()
 	Img = models.FileField(upload_to = "static/img/forum/topicos/", default='static/img/logo_atsia.jpg')
 
-	def __unicode__(self):
+	def __str__(self):
 		return self.Titulo
 
 class Comentario(models.Model):
@@ -60,7 +60,7 @@ class Comentario(models.Model):
 	comentario = models.CharField(max_length=200)
 	autor = models.ForeignKey(User)
 
-	def __unicode__(self):
+	def __str__(self):
 		return self.comentario
 
 class Musica(models.Model):
@@ -86,5 +86,5 @@ class Mensagem(models.Model):
 	data = models.DateTimeField(auto_now = True)
 	Vista = models.BooleanField()
 
-	def __unicode__(self):
+	def __str__(self):
 		return self.Texto
