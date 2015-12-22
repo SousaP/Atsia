@@ -36,8 +36,8 @@ function run(link, player){
         player.src = link.attr('href');
         nome1 = link.attr('nome');
         desc1 = link.attr('desc');
+        document.getElementsByClassName('current')[0].setAttribute("title", desc1);
         document.getElementsByClassName('current')[0].innerHTML = "A tocar: " + nome1;
-        document.getElementsByClassName('describe')[0].innerHTML = desc1;
         par = link.parent();
         par.addClass('active').siblings().removeClass('active');
         audio[0].load();
