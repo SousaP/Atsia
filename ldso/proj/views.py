@@ -25,6 +25,17 @@ def post_view(request, post_id):
 	return render(request, 'post.html', {'blog': blog})
 
 
+def blog_view_paginas(request,page_id):
+	inicio = int(page_id) * 10
+	posts = Blog.objects.all().order_by("-date")[inicio:inicio+10]
+	return render(request, 'blog.html', {'object_list': posts})
+
+
+def blog_view(request):
+	posts = Blog.objects.all().order_by("-date")
+	return render(request, 'blog.html', {'object_list': posts})
+
+
 #enviar um email	
 @csrf_protect
 def post_email(request):

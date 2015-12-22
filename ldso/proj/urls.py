@@ -10,11 +10,12 @@ urlpatterns = patterns('',
 		queryset=Blog.objects.all().order_by("-date")[:0],
 		template_name="base.html")),
 
-	url(r'^blog/$', ListView.as_view(
-                        queryset=Blog.objects.all().order_by("-date"),
-                        template_name="blog.html")),
 
-	url(r'^blog/(?P<post_id>[0-9]+)/$', 'proj.views.post_view', name= 'post_view'),
+	url(r'^blog/$', 'proj.views.blog_view', name= 'blog_view'),
+
+	url(r'^blog/(?P<page_id>[0-9]+)/$', 'proj.views.blog_view_paginas', name= 'blog_view_paginas'),
+
+	url(r'^blog/post/(?P<post_id>[0-9]+)/$', 'proj.views.post_view', name= 'post_view'),
 
 	url(r'^login/$', ListView.as_view(
 						model = Blog,
