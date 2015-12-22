@@ -16,6 +16,7 @@ from itertools import cycle
 from django.http import JsonResponse, HttpResponse
 from django.core import serializers
 import os
+import itertools
 # Create your views here.
 
 #vista de um post
@@ -39,18 +40,35 @@ def forum_view(request, forum_id):
         circulo = CirculoForum.objects.get(nome=participante.circulo)
         circuloForum = CirculoForum.objects.get(id=forum_id)
         if (circuloForum.id == circulo.id) | circuloForum.geral:
-            topicos = Topico.objects.filter(Forum=forum_id,Autorizado=True)
+            topicos = Topico.objects.filter(Forum=forum_id,Autorizado=True).order_by("-Data")
             messages = Comentario.objects.filter(TopicoId__in=topicos).values('TopicoId').annotate(Count('TopicoId'))
-            if len(topicos) > len(messages):
-                zip_list = zip(topicos, cycle(messages))
-            else:
-                zip_list = zip(cycle(topicos), messages)
+            zip_list = list(itertools.zip_longest(topicos, messages))
             nr_mensagens = verifica_mensagens(request)
             return render(request, 'forum_individual.html', {'lista':zip_list, 'CirculoForum': circuloForum, 'messages':messages, "nr_mensagens":nr_mensagens})
         else:
             return  HttpResponseRedirect('/login/')
     else:
         return  HttpResponseRedirect('/login/')
+
+
+
+def forum_view_pagina(request, forum_id,pagina_id):
+    if request.user.is_authenticated():
+        participante = Participante.objects.get(user=request.user)
+        circulo = CirculoForum.objects.get(nome=participante.circulo)
+        circuloForum = CirculoForum.objects.get(id=forum_id)
+        if (circuloForum.id == circulo.id) | circuloForum.geral:
+        	inicio = int(pagina_id) * 10
+        	topicos = Topico.objects.filter(Forum=forum_id,Autorizado=True).order_by("-Data")[inicio:inicio+10]
+        	#return  render(request,'teste.html', {"erro":topicos})
+        	messages = Comentario.objects.filter(TopicoId__in=topicos).values('TopicoId').annotate(Count('TopicoId'))
+        	zip_list = list(itertools.zip_longest(topicos, messages))
+        	nr_mensagens = verifica_mensagens(request)
+        	return render(request, 'forum_individual.html', {'lista':zip_list, 'CirculoForum': circuloForum, 'messages':messages, "nr_mensagens":nr_mensagens})
+        else:
+        	return  HttpResponseRedirect('/login/')
+    else:
+    	return  HttpResponseRedirect('/login/')
 
 
 
@@ -128,10 +146,7 @@ def forum_page(request):
         topicos = Topico.objects.filter(Forum__in=circulo|geral).values('Forum').annotate(Count('Forum'))
         nr_mensagens = verifica_mensagens(request)
         circulos = circulo|geral
-        if len(circulos) > len(topicos):
-            circulos_zip = zip(circulos, cycle(topicos))
-        else:
-            circulos_zip = zip(cycle(circulos), topicos)
+        circulos_zip = list(itertools.zip_longest(circulos, topicos))
         return render(request,'forum.html', {"object_list" : circulos_zip, "topicos":topicos, "nr_mensagens" : nr_mensagens})
     else:
         return  HttpResponseRedirect('/login/')

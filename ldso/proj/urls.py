@@ -11,7 +11,7 @@ urlpatterns = patterns('',
 		template_name="base.html")),
 
 	url(r'^blog/$', ListView.as_view(
-                        queryset=Blog.objects.all().order_by("-date")[:10],
+                        queryset=Blog.objects.all().order_by("-date"),
                         template_name="blog.html")),
 
 	url(r'^blog/(?P<post_id>[0-9]+)/$', 'proj.views.post_view', name= 'post_view'),
@@ -27,6 +27,7 @@ urlpatterns = patterns('',
 
 	url(r'^forum/(?P<forum_id>[0-9]+)/$', 'proj.views.forum_view', name= 'forum_view'),
 
+	url(r'^forum/(?P<forum_id>[0-9]+)/(?P<pagina_id>[0-9]+)/$', 'proj.views.forum_view_pagina', name= 'forum_view_pagina'),
 
 	url(r'^forum/(?P<forum_id>[0-9]+)/CriarTopico/$', 'proj.views.create_post', name= 'create_post'),
 
