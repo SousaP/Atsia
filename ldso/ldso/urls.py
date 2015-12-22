@@ -21,6 +21,7 @@ from django.contrib.auth.models import User
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-
      url(r'.*?', include('proj.urls')),
 ]
+
+admin.site.site_header = 'Atsia administration'

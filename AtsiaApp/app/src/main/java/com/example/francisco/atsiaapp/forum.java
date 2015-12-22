@@ -5,16 +5,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
-
+/*
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+*/
 
 public class forum extends AppCompatActivity {
 
     protected TextView title;
     protected ImageView icon;
-    protected String username;
+    //protected String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +25,7 @@ public class forum extends AppCompatActivity {
 
         setContentView(R.layout.activity_forum);
         //buscar a varaiavel username do login
-        username = getIntent().getExtras().getString(username);
+       /* username = getIntent().getExtras().getString(username);
 
         String[] v1 = new String[1];
         String[] v2 = new String[1];
@@ -52,7 +53,7 @@ public class forum extends AppCompatActivity {
         } catch (JSONException e) {
             // Do something to recover ... or kill the app.
         }
-
+*/
         title = (TextView) findViewById(R.id.title);
         icon  = (ImageView) findViewById(R.id.icon);
     }
