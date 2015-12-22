@@ -14,11 +14,11 @@ class Blog(models.Model):
 
 class Circulos(models.Model):
 	title = models.CharField(max_length = 100)
-	body = models.TextField()
-	adress = models.TextField()
+	descricao = models.TextField()
+	endereco = models.TextField()
 	date = models.DateTimeField()
 
-	def __str__(self):
+	def __unicode__(self):
 	    return self.title
 
 
@@ -35,7 +35,6 @@ class Emails(models.Model):
 class CirculoForum(models.Model):
 	#id = models.IntegerField(primary_key=True)
 	nome = models.CharField(max_length = 50)
-	numero_topicos = models.IntegerField(default = '0', editable= True)
 	descricao = models.CharField(max_length = 100)
 	geral = models.BooleanField(default=False) 
 

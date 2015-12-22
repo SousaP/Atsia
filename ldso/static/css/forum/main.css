@@ -1039,3 +1039,33 @@ font-size: 1.05em;
 	text-align: center;
 	cursor: pointer;
 }
+
+#botao_novo_topico: {
+  background: #ffca29;
+  background-image: -webkit-linear-gradient(top, #ffca29, #e0d616);
+  background-image: -moz-linear-gradient(top, #ffca29, #e0d616);
+  background-image: -ms-linear-gradient(top, #ffca29, #e0d616);
+  background-image: -o-linear-gradient(top, #ffca29, #e0d616);
+  background-image: linear-gradient(to bottom, #ffca29, #e0d616);
+  -webkit-border-radius: 60;
+  -moz-border-radius: 60;
+  border-radius: 60px;
+  -webkit-box-shadow: 0px 1px 3px #ffcc33;
+  -moz-box-shadow: 0px 1px 3px #ffcc33;
+  box-shadow: 0px 1px 3px #ffcc33;
+  font-family: Arial;
+  color: #ffcc33;
+  font-size: 20px;
+  padding: 40px;
+  text-decoration: none;
+}
+
+#botao_novo_topico:hover {
+  background: #ffcc33;
+  background-image: -webkit-linear-gradient(top, #ffcc33, #ffcc33);
+  background-image: -moz-linear-gradient(top, #ffcc33, #ffcc33);
+  background-image: -ms-linear-gradient(top, #ffcc33, #ffcc33);
+  background-image: -o-linear-gradient(top, #ffcc33, #ffcc33);
+  background-image: linear-gradient(to bottom, #ffcc33, #ffcc33);
+  text-decoration: none;
+}
