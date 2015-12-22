@@ -43,15 +43,13 @@ def blog_view_paginas(request,page_id):
 		hasPrevious = True
 	if nr_paginas_post(request) > int(page_id)+1:
 		hasNext = True
-	nextPage = int(page_id) +1;
-	previousPage = int(page_id) -1;
+	nextPage = int(page_id) +1
+	previousPage = int(page_id) -1
 	return render(request, 'blog.html', {'object_list': posts, 'hasNext':hasNext, 'hasPrevious': hasPrevious, 'nextPage':nextPage, 'previousPage':previousPage})
 
 
 def blog_view(request):
-	posts = Blog.objects.all().order_by("-date")
-	return render(request, 'blog.html', {'object_list': posts})
-
+	return blog_view_paginas(request,0);
 
 #enviar um email	
 @csrf_protect
@@ -61,23 +59,16 @@ def post_email(request):
 		form.save()
 		return render(request,'contact.html', {})
 
+
+def nr_paginas_forum(request,forum_id):
+	nr_post = Topico.objects.filter(Forum=forum_id,Autorizado=True).count();
+	return math.ceil(nr_post/10);
+
+
+
 #vista de uma pagina de Forum
 def forum_view(request, forum_id):
-    if request.user.is_authenticated():
-        participante = Participante.objects.get(user=request.user)
-        circulo = CirculoForum.objects.get(nome=participante.circulo)
-        circuloForum = CirculoForum.objects.get(id=forum_id)
-        if (circuloForum.id == circulo.id) | circuloForum.geral:
-            topicos = Topico.objects.filter(Forum=forum_id,Autorizado=True).order_by("-Data")
-            messages = Comentario.objects.filter(TopicoId__in=topicos).values('TopicoId').annotate(Count('TopicoId'))
-            zip_list = list(itertools.zip_longest(topicos, messages))
-            nr_mensagens = verifica_mensagens(request)
-            return render(request, 'forum_individual.html', {'lista':zip_list, 'CirculoForum': circuloForum, 'messages':messages, "nr_mensagens":nr_mensagens})
-        else:
-            return  HttpResponseRedirect('/login/')
-    else:
-        return  HttpResponseRedirect('/login/')
-
+	return forum_view_pagina(request, forum_id,0);
 
 
 def forum_view_pagina(request, forum_id,pagina_id):
@@ -92,7 +83,16 @@ def forum_view_pagina(request, forum_id,pagina_id):
         	messages = Comentario.objects.filter(TopicoId__in=topicos).values('TopicoId').annotate(Count('TopicoId'))
         	zip_list = list(itertools.zip_longest(topicos, messages))
         	nr_mensagens = verifica_mensagens(request)
-        	return render(request, 'forum_individual.html', {'lista':zip_list, 'CirculoForum': circuloForum, 'messages':messages, "nr_mensagens":nr_mensagens})
+        	nr_paginas = nr_paginas_forum(request,forum_id)
+        	hasNext = False
+        	hasPrevious = False
+        	if int(pagina_id) > 0:
+        		hasPrevious = True
+        	if nr_paginas_forum(request,forum_id) > int(pagina_id)+1:
+        		hasNext = True
+        	nextPage = int(pagina_id) +1
+        	previousPage = int(pagina_id) -1
+        	return render(request, 'forum_individual.html', {'lista':zip_list, 'CirculoForum': circuloForum, 'messages':messages, "nr_mensagens":nr_mensagens, 'nr_paginas':range(nr_paginas),'hasNext':hasNext, 'hasPrevious': hasPrevious, 'nextPage':nextPage, 'previousPage':previousPage})
         else:
         	return  HttpResponseRedirect('/login/')
     else:

@@ -30,11 +30,11 @@
         <div class="blog-item well">
             <a href="/forum/topico/{{Topico.id}}/"><h2>{{ Topico.Titulo }}</h2></a>   
             <div class="blog-meta clearfix">
-            {% if Message.TopicoId == Topico.id %}
+                {% if Message.TopicoId == Topico.id %}
                 <p class="pull-right"><a href="/forum/topico/{{Topico.id}}/">{{ Message.TopicoId__count }} respostas</a></p>
-            {%else %}
-            <p class="pull-right"><a href="blog-item.html#comments">0 respostas</a></p>
-            {% endif %}
+                {%else %}
+                <p class="pull-right"><a href="blog-item.html#comments">0 respostas</a></p>
+                {% endif %}
             </div>
             <p>{{ Topico.Descricao|safe|linebreaks|slice:":250" }}...</p>
             <a class="btn btn-link" href="/forum/topico/{{Topico.id}}/">Ver Mais <i class="glyphicon glyphicon-search"></i></a>
@@ -42,8 +42,22 @@
         
         {% endfor %}
         {% endblock %}
+
+        <div class="bs-example" style="text-align:center">
+            <ul class="pagination">
+
+            {% if hasPrevious %}<li><a href="/forum/{{CirculoForum.id}}/{{previousPage}}">&laquo;</a></li>{% endif %}
+                
+                {% for i in nr_paginas %}
+                <li><a href="/forum/{{CirculoForum.id}}/{{ i }}">{{ i }}</a></li>
+                {% endfor %}
+             {% if hasNext %}<li><a href="/forum/{{CirculoForum.id}}/{{nextPage}}">&raquo;</a></li>{% endif %}
+            </ul>
+        </div>
     </section>
     <!--/Tópicos -->
+
+
 
 
     {% include 'footer_forum.html' %}
