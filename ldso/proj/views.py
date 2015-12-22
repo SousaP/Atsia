@@ -16,19 +16,36 @@ from itertools import cycle
 from django.http import JsonResponse, HttpResponse
 from django.core import serializers
 import os
+import math
 import itertools
 # Create your views here.
 
 #vista de um post
+
+
+
 def post_view(request, post_id):
 	blog = get_object_or_404(Blog, id=post_id)
 	return render(request, 'post.html', {'blog': blog})
 
 
+def nr_paginas_post(request):
+	nr_post = Blog.objects.all().count();
+	return math.ceil(nr_post/5);
+
+
 def blog_view_paginas(request,page_id):
-	inicio = int(page_id) * 10
-	posts = Blog.objects.all().order_by("-date")[inicio:inicio+10]
-	return render(request, 'blog.html', {'object_list': posts})
+	inicio = int(page_id) * 1
+	posts = Blog.objects.all().order_by("-date")[inicio:inicio+5]
+	hasNext = False
+	hasPrevious = False
+	if int(page_id) > 0:
+		hasPrevious = True
+	if nr_paginas_post(request) > int(page_id)+1:
+		hasNext = True
+	nextPage = int(page_id) +1;
+	previousPage = int(page_id) -1;
+	return render(request, 'blog.html', {'object_list': posts, 'hasNext':hasNext, 'hasPrevious': hasPrevious, 'nextPage':nextPage, 'previousPage':previousPage})
 
 
 def blog_view(request):
