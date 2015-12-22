@@ -44,6 +44,9 @@ urlpatterns = patterns('',
 
 	url(r'^forum/mensagem/(?P<user_id>[0-9]+)/$', 'proj.views.single_mensage', name= 'single_mensage'),
 
+	url(r'^forum/mensagem/(?P<user_id>[0-9]+)/(?P<page_id>[0-9]+)/$', 'proj.views.single_mensage_paginas', name= 'single_mensage_paginas'),
+
+
 	url(r'^forum/post_mensagem/(?P<user_id>[0-9]+)/$', 'proj.views.post_mensagem', name= 'post_mensagem'),
 
 	url(r'^forum/post_mensagem/$', 'proj.views.post_mensagem_inicial', name= 'post_mensagem_inicial'),

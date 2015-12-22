@@ -232,7 +232,6 @@ def topico_view_paginas(request, topico_id,pagina_id):
 		hasNext = True
 	nextPage = int(pagina_id) +1
 	previousPage = int(pagina_id) -1
-	nr_paginas
 	return render(request, 'topico.html', {'comentarios_fotos': participantes_fotos, 'comentarios':comentarios, 'topico': topico, "nr_mensagens" : nr_mensagens, 'respostas': respostas, 'forum': forum, 'nr_paginas':range(nr_paginas),'hasNext':hasNext, 'hasPrevious': hasPrevious, 'nextPage':nextPage, 'previousPage':previousPage})
 
 
@@ -290,16 +289,33 @@ def mensagens_view(request):
 
 #mensagem
 def single_mensage(request,user_id):
+    return single_mensage_paginas(request,user_id,0);
+
+def nr_mensagens(request,user_id):
+	nr = Mensagem.objects.filter(Q(Autor=user_id,Destinatario=request.user.id) | Q(Destinatario=user_id,Autor=request.user.id)).values('Autor','Texto','data','Destinatario').order_by('data').count()
+	return math.ceil(nr/10);
+
+def single_mensage_paginas(request,user_id,page_id):
     pessoa = User.objects.get(id=user_id)
-    message = Mensagem.objects.filter(Q(Autor=user_id,Destinatario=request.user.id) | Q(Destinatario=user_id,Autor=request.user.id)).values('Autor','Texto','data','Destinatario').order_by('data')
+    inicio = int(page_id) * 10
+    message = Mensagem.objects.filter(Q(Autor=user_id,Destinatario=request.user.id) | Q(Destinatario=user_id,Autor=request.user.id)).values('Autor','Texto','data','Destinatario').order_by('data')[inicio:inicio+10]
     images = []
     for me in message:
         image = Participante.objects.filter(user=me.get('Autor')).values('Img')
         images.append(image)
     messages_zip = zip(cycle(message),images)
     Mensagem.objects.filter(Autor=user_id,Destinatario=request.user.id).update(Vista=True)
+    hasNext = False
+    hasPrevious = False
+    nr_paginas = nr_mensagens(request,user_id)
+    if int(page_id) > 0:
+    	hasPrevious = True
+    if nr_mensagens(request,user_id) > int(page_id)+1:
+    	hasNext = True
+    nextPage = int(page_id) +1
+    previousPage = int(page_id) -1
     #return render(request,'teste.html', {'erro':pessoa})
-    return render(request,'mensagem.html', {'messages_zip':messages_zip, 'pessoa':pessoa})
+    return render(request,'mensagem.html', {'messages_zip':messages_zip,'nr_paginas': range(nr_paginas),'pessoa':pessoa, 'hasNext':hasNext, 'hasPrevious': hasPrevious, 'nextPage':nextPage, 'previousPage':previousPage})
 
 
 #post mensagem
