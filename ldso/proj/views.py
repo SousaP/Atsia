@@ -202,22 +202,42 @@ def edit_names(request):
         return render_to_response('login.html', locals(),context_instance=RequestContext(request))
 
 
+def nr_comentarios_topico(request,topico_id):
+	nr_comentarios = Comentario.objects.filter(TopicoId=topico_id).count();
+	return math.ceil(nr_comentarios/10);
+
+
 #vista de uma pagina de um Topico
+def topico_view_paginas(request, topico_id,pagina_id):
+	inicio = int(pagina_id) * 10
+	comentarios = Comentario.objects.filter(TopicoId=topico_id).order_by("data")[inicio:inicio+10]
+	topico = Topico.objects.get(id=topico_id)
+	nr_mensagens = verifica_mensagens(request)
+	forum = CirculoForum.objects.get(nome=topico.Forum) 
+	respostas = len(comentarios)
+	#utilizadores = Comentario.objects.filter(TopicoId=topico_id).order_by("data").values('autor')
+	images = []
+	for comentario in comentarios:
+		image = Participante.objects.filter(user=comentario.autor).values('Img')
+		images.append(image)
+	#teste = Participante.objects.all()
+	#participantes = teste.filter(user__in=comentarios.values('autor')).values('Img')
+	participantes_fotos = zip(cycle(comentarios), images)
+	hasNext = False
+	hasPrevious = False
+	nr_paginas = nr_comentarios_topico(request,topico_id)
+	if int(pagina_id) > 0:
+		hasPrevious = True
+	if nr_comentarios_topico(request,topico_id) > int(pagina_id)+1:
+		hasNext = True
+	nextPage = int(pagina_id) +1
+	previousPage = int(pagina_id) -1
+	nr_paginas
+	return render(request, 'topico.html', {'comentarios_fotos': participantes_fotos, 'comentarios':comentarios, 'topico': topico, "nr_mensagens" : nr_mensagens, 'respostas': respostas, 'forum': forum, 'nr_paginas':range(nr_paginas),'hasNext':hasNext, 'hasPrevious': hasPrevious, 'nextPage':nextPage, 'previousPage':previousPage})
+
+
 def topico_view(request, topico_id):
-    comentarios = Comentario.objects.filter(TopicoId=topico_id).order_by("data")
-    topico = Topico.objects.get(id=topico_id)
-    nr_mensagens = verifica_mensagens(request)
-    forum = CirculoForum.objects.get(nome=topico.Forum) 
-    respostas = len(comentarios)
-    #utilizadores = Comentario.objects.filter(TopicoId=topico_id).order_by("data").values('autor')
-    images = []
-    for comentario in comentarios:
-        image = Participante.objects.filter(user=comentario.autor).values('Img')
-        images.append(image)
-    #teste = Participante.objects.all()
-    #participantes = teste.filter(user__in=comentarios.values('autor')).values('Img')
-    participantes_fotos = zip(cycle(comentarios), images)
-    return render(request, 'topico.html', {'comentarios_fotos': participantes_fotos, 'comentarios':comentarios, 'topico': topico, "nr_mensagens" : nr_mensagens, 'respostas': respostas, 'forum': forum})
+	return topico_view_paginas(request, topico_id,0);
 
 #novo comentario topico	
 @csrf_protect

@@ -36,6 +36,8 @@ urlpatterns = patterns('',
 
 	url(r'^forum/topico/(?P<topico_id>[0-9]+)/$', 'proj.views.topico_view', name= 'topico_view'),
 
+	url(r'^forum/topico/(?P<topico_id>[0-9]+)/(?P<pagina_id>[0-9]+)/$', 'proj.views.topico_view_paginas', name= 'topico_view_paginas'),
+
 	url(r'^forum/topico/(?P<topico_id>[0-9]+)/(?P<outro_comentario>[/comentario/]*)comentario/$', 'proj.views.post_comentario', name= 'post_comentario'),
 
 	url(r'^forum/mensagens/$', 'proj.views.mensagens_view', name= 'mensagens_view'),

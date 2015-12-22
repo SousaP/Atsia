@@ -91,7 +91,17 @@
 
         <!--/Comentários -->
 
+        <div class="bs-example" style="text-align:center">
+            <ul class="pagination">
 
+            {% if hasPrevious %}<li><a href="/forum/topico/{{ topico.id }}/{{previousPage}}">&laquo;</a></li>{% endif %}
+                
+                {% for i in nr_paginas %}
+                <li><a href="/forum/topico/{{ topico.id }}/{{ i }}">{{ i }}</a></li>
+                {% endfor %}
+             {% if hasNext %}<li><a href="/forum/topico/{{ topico.id }}/{{nextPage}}">&raquo;</a></li>{% endif %}
+            </ul>
+        </div>
 
 
 
