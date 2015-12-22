@@ -68,7 +68,7 @@ hr {
 
 .brand-name {
     margin: 0;
-    font-size: 4em;
+    font-size: 2.5em;
 }
 
 .tagline-divider {
@@ -112,7 +112,7 @@ footer p {
     padding: 50px 0;
 }
 
-@media screen and (min-width:768px) {
+@media screen and (min-width:1250px) {
     .brand {
         display: inherit;
         margin: 0;
