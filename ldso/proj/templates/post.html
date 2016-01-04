@@ -3,6 +3,28 @@
 
 {% include 'top-nav.html' %}
 
+<style>
+
+.myIframe {
+position: relative;
+padding-bottom: 35.25%;
+padding-top: 30px;
+height: 0;
+overflow: auto; 
+-webkit-overflow-scrolling:touch; //<<--- THIS IS THE KEY 
+border: solid black 1px;
+} 
+.myIframe iframe {
+position: absolute;
+top: 0;
+left: 0;
+width: 60%;
+margin-left: 20.5%;
+height: 100%;
+}
+
+</style>
+
 <div class="container" style="margin-bottom: 200px; max-width:90%;">
 
     <div class="row">
@@ -34,8 +56,8 @@
                     <source src="/{{blog.video}}" type="video/mp4">
                     </video>
                 {% elif blog.videourl != 'videourl' %}
-            <div class="videoWrapper" style="margin-bottom: 60px;" >
-                <iframe style="width:60%;" src="{{blog.videourl}}" frameborder="0" allowfullscreen></iframe>
+            <div class='myIframe' style="margin-bottom: 60px;" >
+                <iframe src="{{blog.videourl}}" frameborder="0" allowfullscreen></iframe>
                 </div>
                 {% endif %}
 
